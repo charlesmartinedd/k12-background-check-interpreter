@@ -1,0 +1,283 @@
+{
+  "title": "California Penal Code Reference",
+  "description": "Common California Penal Code sections with descriptions for background check interpretation",
+  "codes": {
+    "148": {
+      "description": "Resisting, delaying, or obstructing a peace officer",
+      "category": "misdemeanor",
+      "k12Impact": "non-disqualifying"
+    },
+    "166": {
+      "description": "Contempt of court",
+      "category": "misdemeanor",
+      "k12Impact": "non-disqualifying"
+    },
+    "187": {
+      "description": "Murder",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(1)", "PC 1192.7(c)(1)"]
+    },
+    "191.5": {
+      "description": "Vehicular manslaughter while intoxicated",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(2)", "PC 1192.7(c)(36)"]
+    },
+    "192": {
+      "description": "Manslaughter (voluntary, involuntary, or vehicular)",
+      "category": "wobbler",
+      "k12Impact": "depends-on-degree"
+    },
+    "207": {
+      "description": "Kidnapping",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 1192.7(c)(11)"]
+    },
+    "209": {
+      "description": "Kidnapping for ransom, extortion, or robbery",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(3)", "PC 1192.7(c)(12)"]
+    },
+    "211": {
+      "description": "Robbery",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(5)", "PC 1192.7(c)(14)"]
+    },
+    "215": {
+      "description": "Carjacking",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(26)", "PC 1192.7(c)(15)"]
+    },
+    "220": {
+      "description": "Assault with intent to commit mayhem or sex crime",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(6)", "PC 1192.7(c)(10)"]
+    },
+    "240": {
+      "description": "Assault",
+      "category": "misdemeanor",
+      "k12Impact": "non-disqualifying"
+    },
+    "242": {
+      "description": "Battery",
+      "category": "misdemeanor",
+      "k12Impact": "non-disqualifying"
+    },
+    "243": {
+      "description": "Battery (various enhancements)",
+      "category": "wobbler",
+      "k12Impact": "depends-on-subdivision"
+    },
+    "243.4": {
+      "description": "Sexual battery",
+      "category": "wobbler",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(28)", "PC 1192.7(c)(38)"]
+    },
+    "244": {
+      "description": "Assault with caustic chemicals",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(7)"]
+    },
+    "245": {
+      "description": "Assault with deadly weapon or force likely to produce great bodily injury",
+      "category": "wobbler",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(8)", "PC 1192.7(c)(19)"]
+    },
+    "246": {
+      "description": "Shooting at inhabited dwelling or vehicle",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 1192.7(c)(20)"]
+    },
+    "261": {
+      "description": "Rape",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(9)", "PC 1192.7(c)(3)"]
+    },
+    "262": {
+      "description": "Spousal rape",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(10)", "PC 1192.7(c)(4)"]
+    },
+    "269": {
+      "description": "Aggravated sexual assault of a child",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(12)", "PC 1192.7(c)(33)"]
+    },
+    "273.5": {
+      "description": "Corporal injury to spouse/cohabitant",
+      "category": "wobbler",
+      "k12Impact": "conditional",
+      "note": "Violent felony only with prior conviction"
+    },
+    "286": {
+      "description": "Sodomy",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(13)", "PC 1192.7(c)(6)"],
+      "note": "Subdivisions (c) and (d) only"
+    },
+    "287": {
+      "description": "Oral copulation",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(14)", "PC 1192.7(c)(7)"],
+      "note": "Subdivisions (c) and (d) only"
+    },
+    "288": {
+      "description": "Lewd or lascivious acts with child under 14",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(15)", "PC 1192.7(c)(8)"]
+    },
+    "288.5": {
+      "description": "Continuous sexual abuse of a child",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(16)", "PC 1192.7(c)(34)"]
+    },
+    "289": {
+      "description": "Sexual penetration by foreign object",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(17)", "PC 1192.7(c)(9)"],
+      "note": "Subdivisions (a) and (j) only"
+    },
+    "314": {
+      "description": "Indecent exposure",
+      "category": "misdemeanor",
+      "k12Impact": "non-disqualifying",
+      "note": "May trigger additional review for school positions"
+    },
+    "368": {
+      "description": "Elder or dependent adult abuse",
+      "category": "wobbler",
+      "k12Impact": "depends-on-degree"
+    },
+    "417": {
+      "description": "Brandishing a weapon",
+      "category": "misdemeanor",
+      "k12Impact": "non-disqualifying"
+    },
+    "422": {
+      "description": "Criminal threats",
+      "category": "wobbler",
+      "k12Impact": "non-disqualifying"
+    },
+    "451": {
+      "description": "Arson",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(18)", "PC 1192.7(c)(16)"],
+      "note": "Subdivisions (a) and (b) only"
+    },
+    "459": {
+      "description": "Burglary",
+      "category": "felony",
+      "k12Impact": "conditional",
+      "citations": ["PC 667.5(c)(19)", "PC 1192.7(c)(18)"],
+      "note": "First degree (residential) is mandatory disqualifier; second degree is not"
+    },
+    "470": {
+      "description": "Forgery",
+      "category": "wobbler",
+      "k12Impact": "non-disqualifying"
+    },
+    "484": {
+      "description": "Theft/Larceny (petty theft)",
+      "category": "misdemeanor",
+      "k12Impact": "non-disqualifying"
+    },
+    "487": {
+      "description": "Grand theft",
+      "category": "wobbler",
+      "k12Impact": "non-disqualifying"
+    },
+    "496": {
+      "description": "Receiving stolen property",
+      "category": "wobbler",
+      "k12Impact": "non-disqualifying"
+    },
+    "503": {
+      "description": "Embezzlement",
+      "category": "wobbler",
+      "k12Impact": "non-disqualifying"
+    },
+    "530.5": {
+      "description": "Identity theft",
+      "category": "wobbler",
+      "k12Impact": "non-disqualifying"
+    },
+    "594": {
+      "description": "Vandalism",
+      "category": "wobbler",
+      "k12Impact": "non-disqualifying"
+    },
+    "653f": {
+      "description": "Solicitation to commit murder",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(23)", "PC 1192.7(c)(31)"]
+    },
+    "664": {
+      "description": "Attempted crime (attempt)",
+      "category": "varies",
+      "k12Impact": "depends-on-underlying-offense",
+      "note": "Impact depends on the attempted crime"
+    },
+    "4500": {
+      "description": "Assault by life prisoner with force likely to produce GBI",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(24)", "PC 1192.7(c)(40)"]
+    },
+    "4501": {
+      "description": "Assault with deadly weapon by prisoner",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(25)", "PC 1192.7(c)(41)"]
+    },
+    "11350": {
+      "description": "Possession of controlled substance",
+      "category": "misdemeanor",
+      "k12Impact": "non-disqualifying",
+      "note": "Reclassified to misdemeanor by Prop 47"
+    },
+    "11377": {
+      "description": "Possession of methamphetamine",
+      "category": "misdemeanor",
+      "k12Impact": "non-disqualifying",
+      "note": "Reclassified to misdemeanor by Prop 47"
+    },
+    "11418": {
+      "description": "Weapons of mass destruction",
+      "category": "felony",
+      "k12Impact": "mandatory-disqualifier",
+      "citations": ["PC 667.5(c)(29)", "PC 1192.7(c)(39)"]
+    },
+    "23152": {
+      "description": "DUI - Driving under the influence",
+      "category": "misdemeanor",
+      "k12Impact": "non-disqualifying",
+      "note": "Felony if priors or injury involved"
+    },
+    "23153": {
+      "description": "DUI causing injury",
+      "category": "wobbler",
+      "k12Impact": "non-disqualifying",
+      "note": "Consider position if involves driving students"
+    }
+  }
+}

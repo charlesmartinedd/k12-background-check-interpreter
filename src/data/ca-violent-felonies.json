@@ -1,0 +1,202 @@
+{
+  "statute": "PC 667.5(c)",
+  "title": "Violent Felonies",
+  "description": "Violent felonies as defined by California Penal Code Section 667.5(c). These are mandatory disqualifiers for K-12 employment under Education Code sections 44830.1 and 45122.1.",
+  "offenses": [
+    {
+      "code": "187",
+      "statute": "PC",
+      "description": "Murder or voluntary manslaughter",
+      "subdivision": "(c)(1)"
+    },
+    {
+      "code": "191.5",
+      "statute": "PC",
+      "description": "Vehicular manslaughter while intoxicated",
+      "subdivision": "(c)(2)"
+    },
+    {
+      "code": "209",
+      "statute": "PC",
+      "description": "Kidnapping",
+      "subdivision": "(c)(3)"
+    },
+    {
+      "code": "209.5",
+      "statute": "PC",
+      "description": "Kidnapping during carjacking",
+      "subdivision": "(c)(4)"
+    },
+    {
+      "code": "211",
+      "statute": "PC",
+      "description": "Robbery",
+      "subdivision": "(c)(5)"
+    },
+    {
+      "code": "220",
+      "statute": "PC",
+      "description": "Assault with intent to commit rape, sodomy, oral copulation, or other specified offenses",
+      "subdivision": "(c)(6)"
+    },
+    {
+      "code": "244",
+      "statute": "PC",
+      "description": "Assault with caustic chemicals",
+      "subdivision": "(c)(7)"
+    },
+    {
+      "code": "245",
+      "statute": "PC",
+      "subdivision_detail": "(a)(1), (a)(2), (a)(3), (a)(4), (b), (c), (d)(1), (d)(2), (d)(3)",
+      "description": "Assault with deadly weapon or force likely to produce great bodily injury",
+      "subdivision": "(c)(8)"
+    },
+    {
+      "code": "261",
+      "statute": "PC",
+      "description": "Rape",
+      "subdivision": "(c)(9)"
+    },
+    {
+      "code": "262",
+      "statute": "PC",
+      "description": "Spousal rape",
+      "subdivision": "(c)(10)"
+    },
+    {
+      "code": "264.1",
+      "statute": "PC",
+      "description": "Rape or sexual penetration in concert",
+      "subdivision": "(c)(11)"
+    },
+    {
+      "code": "269",
+      "statute": "PC",
+      "description": "Aggravated sexual assault of a child",
+      "subdivision": "(c)(12)"
+    },
+    {
+      "code": "286",
+      "statute": "PC",
+      "subdivision_detail": "(c), (d)",
+      "description": "Sodomy by force, violence, duress, menace, or fear",
+      "subdivision": "(c)(13)"
+    },
+    {
+      "code": "287",
+      "statute": "PC",
+      "subdivision_detail": "(c), (d)",
+      "description": "Oral copulation by force, violence, duress, menace, or fear",
+      "subdivision": "(c)(14)"
+    },
+    {
+      "code": "288",
+      "statute": "PC",
+      "description": "Lewd or lascivious acts with a child under 14",
+      "subdivision": "(c)(15)"
+    },
+    {
+      "code": "288.5",
+      "statute": "PC",
+      "description": "Continuous sexual abuse of a child",
+      "subdivision": "(c)(16)"
+    },
+    {
+      "code": "289",
+      "statute": "PC",
+      "subdivision_detail": "(a), (j)",
+      "description": "Sexual penetration by force or with a minor",
+      "subdivision": "(c)(17)"
+    },
+    {
+      "code": "451",
+      "statute": "PC",
+      "subdivision_detail": "(a), (b)",
+      "description": "Arson causing great bodily injury or inhabited structure",
+      "subdivision": "(c)(18)"
+    },
+    {
+      "code": "459",
+      "statute": "PC",
+      "description": "Burglary of the first degree (residential)",
+      "subdivision": "(c)(19)",
+      "note": "First degree only"
+    },
+    {
+      "code": "460",
+      "statute": "PC",
+      "subdivision_detail": "(a)",
+      "description": "First degree burglary (inhabited dwelling)",
+      "subdivision": "(c)(19)"
+    },
+    {
+      "code": "12022.53",
+      "statute": "PC",
+      "description": "Any felony punishable by death or life imprisonment with use of firearm",
+      "subdivision": "(c)(20)"
+    },
+    {
+      "code": "12022.7",
+      "statute": "PC",
+      "description": "Any felony with infliction of great bodily injury",
+      "subdivision": "(c)(21)"
+    },
+    {
+      "code": "12022.9",
+      "statute": "PC",
+      "description": "Any felony causing termination of pregnancy",
+      "subdivision": "(c)(22)"
+    },
+    {
+      "code": "653f",
+      "statute": "PC",
+      "description": "Solicitation to commit murder",
+      "subdivision": "(c)(23)"
+    },
+    {
+      "code": "4500",
+      "statute": "PC",
+      "description": "Assault by life prisoner causing serious injury",
+      "subdivision": "(c)(24)"
+    },
+    {
+      "code": "4501",
+      "statute": "PC",
+      "description": "Assault with deadly weapon by prisoner",
+      "subdivision": "(c)(25)"
+    },
+    {
+      "code": "215",
+      "statute": "PC",
+      "description": "Carjacking",
+      "subdivision": "(c)(26)"
+    },
+    {
+      "code": "273.5",
+      "statute": "PC",
+      "description": "Willful infliction of corporal injury on spouse/cohabitant",
+      "subdivision": "(c)(27)",
+      "note": "When defendant has prior conviction"
+    },
+    {
+      "code": "243.4",
+      "statute": "PC",
+      "description": "Sexual battery",
+      "subdivision": "(c)(28)"
+    },
+    {
+      "code": "11418",
+      "statute": "PC",
+      "subdivision_detail": "(b), (c)",
+      "description": "Use of weapons of mass destruction",
+      "subdivision": "(c)(29)"
+    },
+    {
+      "code": "236.1",
+      "statute": "PC",
+      "description": "Human trafficking",
+      "subdivision": "(c)(30)"
+    }
+  ]
+}

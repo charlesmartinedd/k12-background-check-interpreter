@@ -1,0 +1,567 @@
+{
+  "title": "NCIC Offense Codes",
+  "description": "National Crime Information Center uniform offense codes for criminal history interpretation",
+  "categories": {
+    "0000-0999": "Arson/Bombing Offenses",
+    "1000-1999": "Assault Offenses",
+    "2000-2999": "Burglary/Breaking & Entering",
+    "3000-3999": "Fraud/Deception",
+    "4000-4999": "Dangerous Drugs",
+    "5000-5999": "Escape",
+    "6000-6999": "Sexual Offenses",
+    "7000-7999": "Homicide",
+    "8000-8999": "Kidnapping",
+    "9000-9999": "Larceny/Theft",
+    "10000-10999": "Motor Vehicle Theft",
+    "11000-11999": "Robbery",
+    "12000-12999": "Stolen Property",
+    "13000-13999": "Weapons"
+  },
+  "codes": {
+    "0901": {
+      "description": "Arson - Structure/Property",
+      "category": "Arson",
+      "k12Impact": "review-required"
+    },
+    "0902": {
+      "description": "Arson - Business",
+      "category": "Arson",
+      "k12Impact": "review-required"
+    },
+    "0903": {
+      "description": "Arson - Residential",
+      "category": "Arson",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "0999": {
+      "description": "Arson - Other",
+      "category": "Arson",
+      "k12Impact": "review-required"
+    },
+    "1301": {
+      "description": "Aggravated Assault - Family - Strong-Arm",
+      "category": "Assault",
+      "k12Impact": "review-required"
+    },
+    "1302": {
+      "description": "Aggravated Assault - Family - Gun",
+      "category": "Assault",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1303": {
+      "description": "Aggravated Assault - Family - Knife",
+      "category": "Assault",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1304": {
+      "description": "Aggravated Assault - Family - Other Weapon",
+      "category": "Assault",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1305": {
+      "description": "Aggravated Assault - Non-Family - Strong-Arm",
+      "category": "Assault",
+      "k12Impact": "review-required"
+    },
+    "1306": {
+      "description": "Aggravated Assault - Non-Family - Gun",
+      "category": "Assault",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1307": {
+      "description": "Aggravated Assault - Non-Family - Knife",
+      "category": "Assault",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1308": {
+      "description": "Aggravated Assault - Non-Family - Other Weapon",
+      "category": "Assault",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1310": {
+      "description": "Aggravated Assault - Police Officer - Gun",
+      "category": "Assault",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1311": {
+      "description": "Aggravated Assault - Police Officer - Knife",
+      "category": "Assault",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1313": {
+      "description": "Simple Assault",
+      "category": "Assault",
+      "k12Impact": "non-disqualifying"
+    },
+    "1314": {
+      "description": "Intimidation",
+      "category": "Assault",
+      "k12Impact": "non-disqualifying"
+    },
+    "1315": {
+      "description": "Assault - Non-Aggravated",
+      "category": "Assault",
+      "k12Impact": "non-disqualifying"
+    },
+    "1399": {
+      "description": "Assault - Other",
+      "category": "Assault",
+      "k12Impact": "review-required"
+    },
+    "2201": {
+      "description": "Burglary - Residence - Forced",
+      "category": "Burglary",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "2202": {
+      "description": "Burglary - Residence - No Force",
+      "category": "Burglary",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "2203": {
+      "description": "Burglary - Business - Forced",
+      "category": "Burglary",
+      "k12Impact": "review-required"
+    },
+    "2204": {
+      "description": "Burglary - Business - No Force",
+      "category": "Burglary",
+      "k12Impact": "review-required"
+    },
+    "2299": {
+      "description": "Burglary - Other",
+      "category": "Burglary",
+      "k12Impact": "review-required"
+    },
+    "2601": {
+      "description": "Counterfeiting",
+      "category": "Fraud",
+      "k12Impact": "non-disqualifying"
+    },
+    "2602": {
+      "description": "Forgery",
+      "category": "Fraud",
+      "k12Impact": "non-disqualifying"
+    },
+    "2603": {
+      "description": "Fraud - By Wire",
+      "category": "Fraud",
+      "k12Impact": "non-disqualifying"
+    },
+    "2604": {
+      "description": "Fraud - Credit Card/ATM",
+      "category": "Fraud",
+      "k12Impact": "non-disqualifying"
+    },
+    "2605": {
+      "description": "Fraud - False Statement/Claim",
+      "category": "Fraud",
+      "k12Impact": "non-disqualifying"
+    },
+    "2699": {
+      "description": "Fraud - Other",
+      "category": "Fraud",
+      "k12Impact": "non-disqualifying"
+    },
+    "3501": {
+      "description": "Dangerous Drugs - Heroin - Sell",
+      "category": "Drugs",
+      "k12Impact": "review-required"
+    },
+    "3502": {
+      "description": "Dangerous Drugs - Heroin - Smuggle",
+      "category": "Drugs",
+      "k12Impact": "review-required"
+    },
+    "3503": {
+      "description": "Dangerous Drugs - Heroin - Possession",
+      "category": "Drugs",
+      "k12Impact": "non-disqualifying"
+    },
+    "3510": {
+      "description": "Dangerous Drugs - Cocaine - Sell",
+      "category": "Drugs",
+      "k12Impact": "review-required"
+    },
+    "3511": {
+      "description": "Dangerous Drugs - Cocaine - Smuggle",
+      "category": "Drugs",
+      "k12Impact": "review-required"
+    },
+    "3512": {
+      "description": "Dangerous Drugs - Cocaine - Possession",
+      "category": "Drugs",
+      "k12Impact": "non-disqualifying"
+    },
+    "3530": {
+      "description": "Dangerous Drugs - Marijuana - Sell",
+      "category": "Drugs",
+      "k12Impact": "non-disqualifying"
+    },
+    "3531": {
+      "description": "Dangerous Drugs - Marijuana - Smuggle",
+      "category": "Drugs",
+      "k12Impact": "non-disqualifying"
+    },
+    "3532": {
+      "description": "Dangerous Drugs - Marijuana - Possession",
+      "category": "Drugs",
+      "k12Impact": "non-disqualifying"
+    },
+    "3560": {
+      "description": "Dangerous Drugs - Methamphetamine - Sell",
+      "category": "Drugs",
+      "k12Impact": "review-required"
+    },
+    "3562": {
+      "description": "Dangerous Drugs - Methamphetamine - Possession",
+      "category": "Drugs",
+      "k12Impact": "non-disqualifying"
+    },
+    "3599": {
+      "description": "Dangerous Drugs - Other",
+      "category": "Drugs",
+      "k12Impact": "review-required"
+    },
+    "3601": {
+      "description": "Drug Equipment - Possess",
+      "category": "Drugs",
+      "k12Impact": "non-disqualifying"
+    },
+    "4801": {
+      "description": "Escape - From Custody",
+      "category": "Escape",
+      "k12Impact": "review-required"
+    },
+    "4899": {
+      "description": "Escape - Other",
+      "category": "Escape",
+      "k12Impact": "review-required"
+    },
+    "3601": {
+      "description": "Sex Offense - Against Child - Fondling",
+      "category": "Sex Offense",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "3602": {
+      "description": "Sex Offense - Against Child - Assault",
+      "category": "Sex Offense",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "3603": {
+      "description": "Sex Offense - Against Child - Abuse",
+      "category": "Sex Offense",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "3604": {
+      "description": "Sex Offense - Against Child - Pornography",
+      "category": "Sex Offense",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "3610": {
+      "description": "Forcible Rape",
+      "category": "Sex Offense",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "3611": {
+      "description": "Forcible Sodomy",
+      "category": "Sex Offense",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "3612": {
+      "description": "Sexual Assault With Object",
+      "category": "Sex Offense",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "3613": {
+      "description": "Forcible Fondling",
+      "category": "Sex Offense",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "3620": {
+      "description": "Statutory Rape",
+      "category": "Sex Offense",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "3621": {
+      "description": "Incest",
+      "category": "Sex Offense",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "3640": {
+      "description": "Indecent Exposure",
+      "category": "Sex Offense",
+      "k12Impact": "review-required"
+    },
+    "3699": {
+      "description": "Sex Offense - Other",
+      "category": "Sex Offense",
+      "k12Impact": "review-required"
+    },
+    "0901": {
+      "description": "Homicide - Murder - First Degree",
+      "category": "Homicide",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "0902": {
+      "description": "Homicide - Murder - Second Degree",
+      "category": "Homicide",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "0903": {
+      "description": "Homicide - Voluntary Manslaughter",
+      "category": "Homicide",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "0904": {
+      "description": "Homicide - Involuntary Manslaughter",
+      "category": "Homicide",
+      "k12Impact": "review-required"
+    },
+    "0905": {
+      "description": "Homicide - Vehicular Manslaughter",
+      "category": "Homicide",
+      "k12Impact": "review-required"
+    },
+    "0999": {
+      "description": "Homicide - Other",
+      "category": "Homicide",
+      "k12Impact": "review-required"
+    },
+    "1001": {
+      "description": "Kidnapping - For Ransom",
+      "category": "Kidnapping",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1002": {
+      "description": "Kidnapping - Minor",
+      "category": "Kidnapping",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1003": {
+      "description": "Kidnapping - Hostage",
+      "category": "Kidnapping",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1099": {
+      "description": "Kidnapping - Other",
+      "category": "Kidnapping",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "2301": {
+      "description": "Larceny - Pocket-Picking",
+      "category": "Theft",
+      "k12Impact": "non-disqualifying"
+    },
+    "2302": {
+      "description": "Larceny - Purse Snatching",
+      "category": "Theft",
+      "k12Impact": "non-disqualifying"
+    },
+    "2303": {
+      "description": "Larceny - Shoplifting",
+      "category": "Theft",
+      "k12Impact": "non-disqualifying"
+    },
+    "2304": {
+      "description": "Larceny - From Motor Vehicle",
+      "category": "Theft",
+      "k12Impact": "non-disqualifying"
+    },
+    "2305": {
+      "description": "Larceny - Motor Vehicle Parts",
+      "category": "Theft",
+      "k12Impact": "non-disqualifying"
+    },
+    "2306": {
+      "description": "Larceny - Bicycles",
+      "category": "Theft",
+      "k12Impact": "non-disqualifying"
+    },
+    "2307": {
+      "description": "Larceny - From Building",
+      "category": "Theft",
+      "k12Impact": "non-disqualifying"
+    },
+    "2308": {
+      "description": "Larceny - From Coin Machine",
+      "category": "Theft",
+      "k12Impact": "non-disqualifying"
+    },
+    "2309": {
+      "description": "Larceny - All Other",
+      "category": "Theft",
+      "k12Impact": "non-disqualifying"
+    },
+    "2399": {
+      "description": "Larceny - Other",
+      "category": "Theft",
+      "k12Impact": "non-disqualifying"
+    },
+    "2401": {
+      "description": "Motor Vehicle Theft",
+      "category": "Motor Vehicle Theft",
+      "k12Impact": "non-disqualifying"
+    },
+    "1201": {
+      "description": "Robbery - Business - Gun",
+      "category": "Robbery",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1202": {
+      "description": "Robbery - Business - Knife",
+      "category": "Robbery",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1203": {
+      "description": "Robbery - Business - Other Weapon",
+      "category": "Robbery",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1204": {
+      "description": "Robbery - Business - Strong-Arm",
+      "category": "Robbery",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1205": {
+      "description": "Robbery - Street - Gun",
+      "category": "Robbery",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1206": {
+      "description": "Robbery - Street - Knife",
+      "category": "Robbery",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1207": {
+      "description": "Robbery - Street - Other Weapon",
+      "category": "Robbery",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1208": {
+      "description": "Robbery - Street - Strong-Arm",
+      "category": "Robbery",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1209": {
+      "description": "Robbery - Residence - Gun",
+      "category": "Robbery",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1210": {
+      "description": "Robbery - Residence - Knife",
+      "category": "Robbery",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1211": {
+      "description": "Robbery - Residence - Other Weapon",
+      "category": "Robbery",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1212": {
+      "description": "Robbery - Residence - Strong-Arm",
+      "category": "Robbery",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1213": {
+      "description": "Robbery - Bank - Gun",
+      "category": "Robbery",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "1299": {
+      "description": "Robbery - Other",
+      "category": "Robbery",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "2801": {
+      "description": "Stolen Property - Receiving",
+      "category": "Stolen Property",
+      "k12Impact": "non-disqualifying"
+    },
+    "2802": {
+      "description": "Stolen Property - Trafficking",
+      "category": "Stolen Property",
+      "k12Impact": "non-disqualifying"
+    },
+    "2899": {
+      "description": "Stolen Property - Other",
+      "category": "Stolen Property",
+      "k12Impact": "non-disqualifying"
+    },
+    "5201": {
+      "description": "Weapons - Firearm - Possession",
+      "category": "Weapons",
+      "k12Impact": "review-required"
+    },
+    "5202": {
+      "description": "Weapons - Firearm - Sale",
+      "category": "Weapons",
+      "k12Impact": "review-required"
+    },
+    "5203": {
+      "description": "Weapons - Firearm - Alteration/Manufacture",
+      "category": "Weapons",
+      "k12Impact": "review-required"
+    },
+    "5204": {
+      "description": "Weapons - Firearm - Carrying Concealed",
+      "category": "Weapons",
+      "k12Impact": "review-required"
+    },
+    "5210": {
+      "description": "Weapons - Explosive - Possession",
+      "category": "Weapons",
+      "k12Impact": "mandatory-disqualifier"
+    },
+    "5299": {
+      "description": "Weapons - Other",
+      "category": "Weapons",
+      "k12Impact": "review-required"
+    },
+    "5401": {
+      "description": "Traffic - DUI Alcohol",
+      "category": "Traffic",
+      "k12Impact": "non-disqualifying"
+    },
+    "5402": {
+      "description": "Traffic - DUI Drugs",
+      "category": "Traffic",
+      "k12Impact": "non-disqualifying"
+    },
+    "5403": {
+      "description": "Traffic - Hit and Run",
+      "category": "Traffic",
+      "k12Impact": "review-required"
+    },
+    "5404": {
+      "description": "Traffic - Reckless Driving",
+      "category": "Traffic",
+      "k12Impact": "non-disqualifying"
+    },
+    "5499": {
+      "description": "Traffic - Other",
+      "category": "Traffic",
+      "k12Impact": "non-disqualifying"
+    },
+    "9001": {
+      "description": "Prostitution - Promoting/Soliciting",
+      "category": "Prostitution",
+      "k12Impact": "non-disqualifying"
+    },
+    "9002": {
+      "description": "Prostitution - Engaging in",
+      "category": "Prostitution",
+      "k12Impact": "non-disqualifying"
+    },
+    "9003": {
+      "description": "Prostitution - Procurement",
+      "category": "Prostitution",
+      "k12Impact": "review-required"
+    },
+    "9099": {
+      "description": "Prostitution - Other",
+      "category": "Prostitution",
+      "k12Impact": "non-disqualifying"
+    }
+  }
+}
