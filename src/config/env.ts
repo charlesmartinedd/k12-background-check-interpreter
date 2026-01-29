@@ -4,11 +4,11 @@
 export const config = {
   openai: {
     apiKey: import.meta.env.VITE_OPENAI_API_KEY as string,
-    model: 'gpt-5.2', // OpenAI GPT-5.2 Thinking model
+    model: 'gpt-4o', // OpenAI GPT-4o for analysis
   },
   gemini: {
     apiKey: import.meta.env.VITE_GEMINI_API_KEY as string,
-    model: 'gemini-2.0-flash', // Fast model for RAG queries
+    model: 'gemini-2.0-flash-exp', // Gemini 2.0 Flash
   },
 } as const;
 
