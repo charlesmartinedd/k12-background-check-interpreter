@@ -21,7 +21,7 @@ export function OffenseResult({ offense, context, disposition }: OffenseResultPr
         };
       case 'has-exemption-path':
         return {
-          text: 'REVIEW REQUIRED',
+          text: 'EXEMPTION AVAILABLE',
           subtext: 'May hire with valid exemption documentation',
           bgColor: 'bg-[var(--color-warning-bg)]',
           borderColor: 'border-[var(--color-warning)]',
@@ -37,8 +37,8 @@ export function OffenseResult({ offense, context, disposition }: OffenseResultPr
         };
       default:
         return {
-          text: 'REVIEW REQUIRED',
-          subtext: 'Consult legal counsel',
+          text: 'EXEMPTION AVAILABLE',
+          subtext: 'Consult legal counsel for exemption options',
           bgColor: 'bg-[var(--color-warning-bg)]',
           borderColor: 'border-[var(--color-warning)]',
           textColor: 'text-[var(--color-warning)]',

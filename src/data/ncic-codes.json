@@ -21,12 +21,12 @@
     "0901": {
       "description": "Arson - Structure/Property",
       "category": "Arson",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "0902": {
       "description": "Arson - Business",
       "category": "Arson",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "0903": {
       "description": "Arson - Residential",
@@ -36,12 +36,12 @@
     "0999": {
       "description": "Arson - Other",
       "category": "Arson",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "1301": {
       "description": "Aggravated Assault - Family - Strong-Arm",
       "category": "Assault",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "1302": {
       "description": "Aggravated Assault - Family - Gun",
@@ -61,7 +61,7 @@
     "1305": {
       "description": "Aggravated Assault - Non-Family - Strong-Arm",
       "category": "Assault",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "1306": {
       "description": "Aggravated Assault - Non-Family - Gun",
@@ -106,7 +106,7 @@
     "1399": {
       "description": "Assault - Other",
       "category": "Assault",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "2201": {
       "description": "Burglary - Residence - Forced",
@@ -121,17 +121,17 @@
     "2203": {
       "description": "Burglary - Business - Forced",
       "category": "Burglary",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "2204": {
       "description": "Burglary - Business - No Force",
       "category": "Burglary",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "2299": {
       "description": "Burglary - Other",
       "category": "Burglary",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "2601": {
       "description": "Counterfeiting",
@@ -166,12 +166,12 @@
     "3501": {
       "description": "Dangerous Drugs - Heroin - Sell",
       "category": "Drugs",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "3502": {
       "description": "Dangerous Drugs - Heroin - Smuggle",
       "category": "Drugs",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "3503": {
       "description": "Dangerous Drugs - Heroin - Possession",
@@ -181,12 +181,12 @@
     "3510": {
       "description": "Dangerous Drugs - Cocaine - Sell",
       "category": "Drugs",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "3511": {
       "description": "Dangerous Drugs - Cocaine - Smuggle",
       "category": "Drugs",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "3512": {
       "description": "Dangerous Drugs - Cocaine - Possession",
@@ -211,7 +211,7 @@
     "3560": {
       "description": "Dangerous Drugs - Methamphetamine - Sell",
       "category": "Drugs",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "3562": {
       "description": "Dangerous Drugs - Methamphetamine - Possession",
@@ -221,7 +221,7 @@
     "3599": {
       "description": "Dangerous Drugs - Other",
       "category": "Drugs",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "3601": {
       "description": "Drug Equipment - Possess",
@@ -231,12 +231,12 @@
     "4801": {
       "description": "Escape - From Custody",
       "category": "Escape",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "4899": {
       "description": "Escape - Other",
       "category": "Escape",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "3601": {
       "description": "Sex Offense - Against Child - Fondling",
@@ -291,12 +291,12 @@
     "3640": {
       "description": "Indecent Exposure",
       "category": "Sex Offense",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "3699": {
       "description": "Sex Offense - Other",
       "category": "Sex Offense",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "0901": {
       "description": "Homicide - Murder - First Degree",
@@ -316,17 +316,17 @@
     "0904": {
       "description": "Homicide - Involuntary Manslaughter",
       "category": "Homicide",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "0905": {
       "description": "Homicide - Vehicular Manslaughter",
       "category": "Homicide",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "0999": {
       "description": "Homicide - Other",
       "category": "Homicide",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "1001": {
       "description": "Kidnapping - For Ransom",
@@ -491,22 +491,22 @@
     "5201": {
       "description": "Weapons - Firearm - Possession",
       "category": "Weapons",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "5202": {
       "description": "Weapons - Firearm - Sale",
       "category": "Weapons",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "5203": {
       "description": "Weapons - Firearm - Alteration/Manufacture",
       "category": "Weapons",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "5204": {
       "description": "Weapons - Firearm - Carrying Concealed",
       "category": "Weapons",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "5210": {
       "description": "Weapons - Explosive - Possession",
@@ -516,7 +516,7 @@
     "5299": {
       "description": "Weapons - Other",
       "category": "Weapons",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "5401": {
       "description": "Traffic - DUI Alcohol",
@@ -531,7 +531,7 @@
     "5403": {
       "description": "Traffic - Hit and Run",
       "category": "Traffic",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "5404": {
       "description": "Traffic - Reckless Driving",
@@ -556,7 +556,7 @@
     "9003": {
       "description": "Prostitution - Procurement",
       "category": "Prostitution",
-      "k12Impact": "review-required"
+      "k12Impact": "has-exemption-path"
     },
     "9099": {
       "description": "Prostitution - Other",
