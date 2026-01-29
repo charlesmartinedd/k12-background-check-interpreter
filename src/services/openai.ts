@@ -282,7 +282,7 @@ Write in a professional, clear tone. Be direct about the hiring recommendation. 
         { role: 'user', content: prompt },
       ],
       temperature: 0.5,
-      max_tokens: 500,
+      max_completion_tokens: 500, // GPT-5.2 uses max_completion_tokens instead of max_tokens
     });
 
     return response.choices[0]?.message?.content || 'Unable to generate summary.';
