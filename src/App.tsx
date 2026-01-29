@@ -104,6 +104,10 @@ function App() {
 
       setAnalysis(result);
       setAnalysisStatus('complete');
+
+      // Scroll to top to show Analysis Summary first
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
       toast.success(`Analyzed ${codes.length} offense code${codes.length !== 1 ? 's' : ''} with AI`);
     } catch (error) {
       console.error('Analysis error:', error);
