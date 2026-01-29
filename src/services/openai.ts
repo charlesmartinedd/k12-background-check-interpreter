@@ -185,7 +185,7 @@ export async function analyzeOffenseCode(
           { role: 'user', content: userPrompt },
         ],
         response_format: { type: 'json_object' },
-        temperature: 0.3, // Lower temperature for more consistent legal analysis
+        // Note: GPT-5.2 reasoning models don't support temperature parameter
       });
     });
 
@@ -281,8 +281,8 @@ Write in a professional, clear tone. Be direct about the hiring recommendation. 
       messages: [
         { role: 'user', content: prompt },
       ],
-      temperature: 0.5,
       max_completion_tokens: 500, // GPT-5.2 uses max_completion_tokens instead of max_tokens
+      // Note: GPT-5.2 reasoning models don't support temperature parameter
     });
 
     return response.choices[0]?.message?.content || 'Unable to generate summary.';
@@ -346,7 +346,7 @@ REMEMBER:
           content: m.content,
         })),
       ],
-      temperature: 0.5,
+      // Note: GPT-5.2 reasoning models don't support temperature parameter
     });
 
     const content = response.choices[0]?.message?.content || 'I apologize, but I was unable to generate a response.';
@@ -410,8 +410,8 @@ REMEMBER:
           content: m.content,
         })),
       ],
-      temperature: 0.5,
       stream: true,
+      // Note: GPT-5.2 reasoning models don't support temperature parameter
     });
 
     for await (const chunk of stream) {

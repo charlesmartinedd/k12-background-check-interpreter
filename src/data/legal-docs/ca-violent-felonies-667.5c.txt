@@ -1,0 +1,139 @@
+# California Penal Code Section 667.5(c) - Violent Felonies
+
+## Overview
+California Penal Code Section 667.5(c) defines "violent felonies" for purposes of sentence enhancements and other legal consequences. These offenses are MANDATORY DISQUALIFIERS for K-12 employment under California Education Code sections 44830.1 and 45122.1.
+
+## Complete List of Violent Felonies Under PC 667.5(c)
+
+### (1) Murder or voluntary manslaughter - PC 187, PC 192(a)
+A person convicted of murder (PC 187) or voluntary manslaughter (PC 192(a)) is permanently disqualified from K-12 employment. No exemption pathway exists.
+
+### (2) Mayhem - PC 203
+Mayhem involves unlawfully and maliciously depriving a human being of a member of their body, or disabling, disfiguring, or rendering it useless. Mandatory disqualifier.
+
+### (3) Rape - PC 261
+Rape as defined in Section 261 is a violent felony. Mandatory disqualifier with no exemption pathway for K-12 employment.
+
+### (4) Sodomy by force - PC 286
+Sodomy accomplished by means of force, violence, duress, menace, or fear. Mandatory disqualifier.
+
+### (5) Oral copulation by force - PC 287 (formerly PC 288a)
+Oral copulation accomplished by means of force, violence, duress, menace, or fear. Mandatory disqualifier.
+
+### (6) Lewd acts on child under 14 - PC 288
+Any person who willfully and lewdly commits any lewd or lascivious act upon or with the body of a child under 14 years. MANDATORY DISQUALIFIER - NO EXEMPTION.
+
+### (7) Any felony punishable by death or life imprisonment
+Any felony where the punishment includes death or life imprisonment is automatically a violent felony.
+
+### (8) Any felony with personal infliction of great bodily injury - PC 12022.7, PC 12022.8, PC 12022.9
+Felonies where the defendant personally inflicted great bodily injury on any victim.
+
+### (9) Any felony with use of firearm - PC 12022.5, PC 12022.53
+Felonies where the defendant personally used a firearm during the commission of the offense.
+
+### (10) Attempted murder - PC 664/187
+Attempt to commit murder is a violent felony.
+
+### (11) Explosion causing bodily injury - PC 12310
+Use of explosive device causing bodily injury.
+
+### (12) Explosion causing death or mayhem - PC 12310
+Use of explosive device causing death or great bodily injury.
+
+### (13) Explosion with intent to murder - PC 12308
+Possession of explosive with intent to murder.
+
+### (14) Kidnapping - PC 207, PC 209, PC 209.5
+Kidnapping offenses including kidnapping for ransom, reward, extortion, or robbery, and kidnapping during carjacking.
+
+### (15) Assault with intent to commit mayhem, rape, sodomy, or oral copulation - PC 220
+Assault with intent to commit a specified sexual offense.
+
+### (16) Continuous sexual abuse of child - PC 288.5
+Any person who resides in the same home with a minor child or has recurring access to the child and over a period of time engages in sexual conduct with the child.
+
+### (17) Carjacking - PC 215
+The felonious taking of a motor vehicle in the possession of another person against their will by means of force or fear.
+
+### (18) Robbery - PC 211
+Robbery is the felonious taking of personal property in the possession of another, from his person or immediate presence, and against his will, accomplished by means of force or fear. MANDATORY DISQUALIFIER.
+
+### (19) Arson causing great bodily injury - PC 451(a)
+Arson that causes great bodily injury is a violent felony.
+
+### (20) Arson of inhabited structure - PC 451(b)
+Willfully and maliciously setting fire to any inhabited structure or inhabited property.
+
+### (21) Penetration with foreign object by force - PC 289
+Sexual penetration accomplished by means of force, violence, duress, menace, or fear.
+
+### (22) Burglary of inhabited dwelling - PC 460(a) (first degree)
+First degree burglary of an inhabited dwelling house is a violent felony.
+
+### (23) Kidnapping in commission of carjacking - PC 209.5
+Kidnapping during the commission of a carjacking.
+
+### (24) Torture - PC 206
+Every person who, with the intent to cause cruel or extreme pain and suffering for the purpose of revenge, extortion, persuasion, or for any sadistic purpose, inflicts great bodily injury.
+
+### (25) Aggravated mayhem - PC 205
+Intentionally causing permanent disability or disfigurement.
+
+### (26) Threatening witnesses/victims - PC 136.1
+Threatening witnesses, victims, or informants in a manner that would reasonably cause fear.
+
+### (27) Criminal threats - PC 422
+Willfully threatening to commit a crime which will result in death or great bodily injury to another person.
+
+### (28) Assault with deadly weapon on peace officer/firefighter - PC 245(d)
+Assault with a deadly weapon or instrument upon a peace officer or firefighter.
+
+### (29) Assault with caustic chemicals - PC 244
+Assault with caustic chemicals with intent to injure or disfigure.
+
+### (30) Exploding destructive device with intent to injure - PC 18755
+Exploding or attempting to explode a destructive device with intent to injure.
+
+### (31) Human trafficking - PC 236.1
+Human trafficking involving force, fear, fraud, coercion, violence, duress, menace, or threat.
+
+### (32) Domestic violence with prior - PC 273.5
+Felony domestic violence with prior conviction for domestic violence.
+
+## K-12 Employment Consequences
+
+Under California Education Code Section 44830.1 (certificated employees) and Section 45122.1 (classified employees):
+
+1. A person convicted of ANY violent felony listed in PC 667.5(c) is PROHIBITED from employment in a position requiring contact with students.
+
+2. This prohibition applies to:
+   - Teachers (certificated)
+   - Administrators
+   - Classified staff (custodians, office staff, aides)
+   - Contractors and volunteers with student contact
+
+3. NO EXEMPTION is available for most violent felonies, especially:
+   - Sex offenses against minors (PC 288, PC 288.5)
+   - Murder (PC 187)
+   - Kidnapping of a minor
+
+4. Limited exemption pathways may exist ONLY for certain violent felonies through:
+   - Certificate of Rehabilitation (PC 4852.01)
+   - Governor's Pardon
+
+However, exemptions are NOT available for offenses requiring sex offender registration.
+
+## How to Determine if an Offense is a Violent Felony
+
+1. Check if the code section is explicitly listed in PC 667.5(c)
+2. Check if the offense involved personal infliction of great bodily injury
+3. Check if a firearm was personally used during the offense
+4. Check if the offense is punishable by death or life imprisonment
+
+## Important Citations
+
+- California Penal Code Section 667.5(c)
+- California Education Code Section 44830.1
+- California Education Code Section 45122.1
+- California Penal Code Section 4852.01 (Certificate of Rehabilitation)
