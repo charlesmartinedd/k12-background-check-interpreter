@@ -1,5 +1,4 @@
 import { Card, CardContent } from './ui/Card';
-import { StatusBadge } from './ui/Badge';
 import type { OffenseInfo } from '../utils/codeLookup';
 
 interface OffenseResultProps {
@@ -9,99 +8,190 @@ interface OffenseResultProps {
 }
 
 export function OffenseResult({ offense, context, disposition }: OffenseResultProps) {
+  // Determine the verdict for HR
+  const getVerdict = () => {
+    switch (offense.k12Impact) {
+      case 'mandatory-disqualifier':
+        return {
+          text: 'CANNOT HIRE',
+          subtext: 'Mandatory disqualifier under California law',
+          bgColor: 'bg-[var(--color-danger-bg)]',
+          borderColor: 'border-[var(--color-danger)]',
+          textColor: 'text-[var(--color-danger)]',
+        };
+      case 'has-exemption-path':
+        return {
+          text: 'REVIEW REQUIRED',
+          subtext: 'May hire with valid exemption documentation',
+          bgColor: 'bg-[var(--color-warning-bg)]',
+          borderColor: 'border-[var(--color-warning)]',
+          textColor: 'text-[var(--color-warning)]',
+        };
+      case 'non-disqualifying':
+        return {
+          text: 'OK TO PROCEED',
+          subtext: 'Not a disqualifier for K-12 employment',
+          bgColor: 'bg-[var(--color-success-bg)]',
+          borderColor: 'border-[var(--color-success)]',
+          textColor: 'text-[var(--color-success)]',
+        };
+      default:
+        return {
+          text: 'REVIEW REQUIRED',
+          subtext: 'Consult legal counsel',
+          bgColor: 'bg-[var(--color-warning-bg)]',
+          borderColor: 'border-[var(--color-warning)]',
+          textColor: 'text-[var(--color-warning)]',
+        };
+    }
+  };
+
+  const verdict = getVerdict();
+
+  // Determine if felony or misdemeanor
+  const getClassification = () => {
+    if (offense.isViolentFelony) return { type: 'VIOLENT FELONY', color: 'text-[var(--color-danger)]' };
+    if (offense.isSeriousFelony) return { type: 'SERIOUS FELONY', color: 'text-[var(--color-warning)]' };
+    if (offense.category?.toLowerCase().includes('felony')) return { type: 'FELONY', color: 'text-[var(--color-warning)]' };
+    if (offense.category?.toLowerCase().includes('misdemeanor')) return { type: 'MISDEMEANOR', color: 'text-[var(--color-text-secondary)]' };
+    if (offense.category?.toLowerCase().includes('infraction')) return { type: 'INFRACTION', color: 'text-[var(--color-success)]' };
+    return null;
+  };
+
+  const classification = getClassification();
+
   return (
     <Card
       variant="bordered"
-      padding="md"
-      className="animate-slide-up"
+      padding="none"
+      className="overflow-hidden bg-[var(--color-surface)] border-[var(--color-border)]"
     >
-      <CardContent>
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-          <div className="flex-1">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="font-mono text-lg font-semibold text-[var(--color-text-primary)]">
-                {offense.code} {offense.statute !== 'NCIC' && offense.statute !== 'UNKNOWN' ? offense.statute : ''}
-              </span>
-              {context && (
-                <span className="text-caption bg-[var(--color-background)] px-2 py-0.5 rounded">
-                  {context}
-                </span>
-              )}
-            </div>
-            <p className="text-body text-[var(--color-text-primary)] mb-2">
-              {offense.description}
+      {/* Verdict Banner - Most Important Info */}
+      <div className={`${verdict.bgColor} ${verdict.borderColor} border-l-4 px-4 py-3`}>
+        <div className="flex items-center justify-between">
+          <div>
+            <p className={`text-lg font-bold ${verdict.textColor}`}>
+              {verdict.text}
             </p>
-            <div className="flex flex-wrap gap-2 text-caption">
-              <span className="text-[var(--color-text-secondary)]">
-                Category: {offense.category}
-              </span>
-              {disposition && disposition !== 'UNKNOWN' && (
-                <>
-                  <span className="text-[var(--color-text-tertiary)]">|</span>
-                  <span className={`
-                    ${disposition === 'CONVICTED' ? 'text-[var(--color-alert)]' : ''}
-                    ${disposition === 'DISMISSED' || disposition === 'ACQUITTED' ? 'text-[var(--color-success)]' : ''}
-                    ${disposition === 'PENDING' ? 'text-[var(--color-warning)]' : ''}
-                  `}>
-                    {disposition}
-                  </span>
-                </>
-              )}
-            </div>
+            <p className="text-sm text-[var(--color-text-secondary)]">
+              {verdict.subtext}
+            </p>
           </div>
-          <div className="sm:text-right">
-            <StatusBadge status={offense.k12Impact} />
-          </div>
+          {classification && (
+            <span className={`text-xs font-semibold px-3 py-1 rounded-full bg-[var(--color-surface)] ${classification.color}`}>
+              {classification.type}
+            </span>
+          )}
+        </div>
+      </div>
+
+      <CardContent className="p-4">
+        {/* Code and Type */}
+        <div className="flex items-center gap-2 mb-3">
+          <span className="font-mono text-xl font-bold text-[var(--color-text-primary)]">
+            {offense.code}
+          </span>
+          {offense.statute && offense.statute !== 'UNKNOWN' && (
+            <span className="text-xs font-medium px-2 py-0.5 rounded bg-[var(--color-surface-elevated)] text-[var(--color-text-secondary)] border border-[var(--color-border)]">
+              {offense.statute === 'NCIC' ? 'NCIC Code' : `${offense.statute} Code`}
+            </span>
+          )}
+          {context && (
+            <span className="text-xs px-2 py-0.5 rounded bg-[var(--color-primary-light)] text-[var(--color-primary)]">
+              {context}
+            </span>
+          )}
         </div>
 
-        {/* Additional details for disqualifying offenses */}
-        {(offense.isViolentFelony || offense.isSeriousFelony) && (
-          <div className="mt-3 pt-3 border-t border-[var(--color-border-light)]">
-            <div className="flex flex-wrap gap-2">
+        {/* Charge Description - The Actual Offense */}
+        <div className="mb-4">
+          <p className="text-sm font-medium text-[var(--color-text-secondary)] mb-1">
+            CHARGE DESCRIPTION
+          </p>
+          <p className="text-base text-[var(--color-text-primary)]">
+            {offense.description && !offense.description.includes('requires legal verification')
+              ? offense.description
+              : `${offense.code} - ${offense.category || 'Criminal Offense'}`}
+          </p>
+        </div>
+
+        {/* Disposition if available */}
+        {disposition && disposition !== 'UNKNOWN' && (
+          <div className="mb-4">
+            <p className="text-sm font-medium text-[var(--color-text-secondary)] mb-1">
+              DISPOSITION
+            </p>
+            <span className={`inline-flex items-center gap-1 px-2 py-1 rounded text-sm font-medium
+              ${disposition === 'CONVICTED' ? 'bg-[var(--color-danger-bg)] text-[var(--color-danger)]' : ''}
+              ${disposition === 'DISMISSED' || disposition === 'ACQUITTED' ? 'bg-[var(--color-success-bg)] text-[var(--color-success)]' : ''}
+              ${disposition === 'PENDING' ? 'bg-[var(--color-warning-bg)] text-[var(--color-warning)]' : ''}
+            `}>
+              {disposition}
+            </span>
+          </div>
+        )}
+
+        {/* Legal Details */}
+        {(offense.isViolentFelony || offense.isSeriousFelony || (offense.citations && offense.citations.length > 0)) && (
+          <div className="pt-3 border-t border-[var(--color-border)]">
+            <p className="text-sm font-medium text-[var(--color-text-secondary)] mb-2">
+              LEGAL BASIS
+            </p>
+            <div className="space-y-2">
               {offense.isViolentFelony && (
-                <span className="inline-flex items-center gap-1 px-2 py-1 bg-[var(--color-alert-bg)] text-[#C41E11] text-xs rounded-[var(--radius-sm)]">
-                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                  </svg>
-                  Violent Felony (PC 667.5(c))
-                </span>
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="w-2 h-2 rounded-full bg-[var(--color-danger)]"></span>
+                  <span className="text-[var(--color-text-primary)]">
+                    Listed under PC 667.5(c) - Violent Felonies
+                  </span>
+                </div>
               )}
               {offense.isSeriousFelony && !offense.isViolentFelony && (
-                <span className="inline-flex items-center gap-1 px-2 py-1 bg-[var(--color-warning-bg)] text-[#995700] text-xs rounded-[var(--radius-sm)]">
-                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                  </svg>
-                  Serious Felony (PC 1192.7(c))
-                </span>
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="w-2 h-2 rounded-full bg-[var(--color-warning)]"></span>
+                  <span className="text-[var(--color-text-primary)]">
+                    Listed under PC 1192.7(c) - Serious Felonies
+                  </span>
+                </div>
+              )}
+              {offense.citations && offense.citations.length > 0 && (
+                <p className="text-sm text-[var(--color-text-secondary)]">
+                  Citations: {offense.citations.join(', ')}
+                </p>
               )}
             </div>
-            {offense.citations && offense.citations.length > 0 && (
-              <p className="text-caption mt-2">
-                Legal Citation: {offense.citations.join(', ')}
-              </p>
-            )}
           </div>
         )}
 
-        {/* Exemption path indicator */}
-        {offense.exemptionAvailable && (
-          <div className="mt-3 pt-3 border-t border-[var(--color-border-light)]">
-            <p className="text-body-sm text-[var(--color-text-secondary)] flex items-start gap-2">
-              <svg className="w-4 h-4 flex-shrink-0 mt-0.5 text-[var(--color-info)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        {/* Exemption Info */}
+        {offense.exemptionAvailable && offense.k12Impact !== 'non-disqualifying' && (
+          <div className="mt-3 pt-3 border-t border-[var(--color-border)]">
+            <div className="flex items-start gap-2 p-3 rounded-lg bg-[var(--color-info-bg)]">
+              <svg className="w-5 h-5 flex-shrink-0 text-[var(--color-info)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span>
-                This offense may have an exemption pathway through Certificate of Rehabilitation or court finding of rehabilitation.
-              </span>
-            </p>
+              <div>
+                <p className="text-sm font-medium text-[var(--color-info)]">
+                  Exemption Path Available
+                </p>
+                <p className="text-sm text-[var(--color-text-secondary)] mt-1">
+                  Candidate may qualify through Certificate of Rehabilitation (PC 4852.01) or court finding of rehabilitation.
+                </p>
+              </div>
+            </div>
           </div>
         )}
 
-        {/* Note if present */}
+        {/* HR Guidance Note */}
         {offense.note && (
-          <p className="mt-2 text-caption text-[var(--color-text-secondary)] italic">
-            Note: {offense.note}
-          </p>
+          <div className="mt-3 pt-3 border-t border-[var(--color-border)]">
+            <p className="text-sm font-medium text-[var(--color-text-secondary)] mb-1">
+              HR GUIDANCE
+            </p>
+            <p className="text-sm text-[var(--color-text-primary)]">
+              {offense.note}
+            </p>
+          </div>
         )}
       </CardContent>
     </Card>
