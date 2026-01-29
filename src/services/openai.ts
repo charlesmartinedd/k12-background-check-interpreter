@@ -400,23 +400,33 @@ REMEMBER:
 - Recommend attorney consultation for hiring decisions
 - Maintain a rehabilitation-positive perspective`;
 
-  const stream = await client.chat.completions.create({
-    model: config.openai.model,
-    messages: [
-      { role: 'system', content: chatSystemPrompt },
-      ...messages.map(m => ({
-        role: m.role as 'user' | 'assistant' | 'system',
-        content: m.content,
-      })),
-    ],
-    temperature: 0.5,
-    stream: true,
-  });
+  try {
+    const stream = await client.chat.completions.create({
+      model: config.openai.model,
+      messages: [
+        { role: 'system', content: chatSystemPrompt },
+        ...messages.map(m => ({
+          role: m.role as 'user' | 'assistant' | 'system',
+          content: m.content,
+        })),
+      ],
+      temperature: 0.5,
+      stream: true,
+    });
 
-  for await (const chunk of stream) {
-    const content = chunk.choices[0]?.delta?.content;
-    if (content) {
-      yield content;
+    for await (const chunk of stream) {
+      const content = chunk.choices[0]?.delta?.content;
+      if (content) {
+        yield content;
+      }
+    }
+  } catch (error) {
+    console.error('OpenAI streaming error:', error);
+    // Yield error message so user sees it
+    if (error instanceof Error) {
+      yield `Error: ${error.message}. Please check your API key configuration.`;
+    } else {
+      yield 'An unexpected error occurred. Please try again.';
     }
   }
 }
