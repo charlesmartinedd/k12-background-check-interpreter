@@ -18,9 +18,12 @@ export function AIChat({ analysis }: AIChatProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  // Auto-scroll to bottom when new messages arrive
+  // Scroll within chat container only (not the whole page)
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messagesEndRef.current) {
+      // Only scroll within the chat messages container, not the page
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
   }, [messages, streamingContent]);
 
   // Focus input on mount
