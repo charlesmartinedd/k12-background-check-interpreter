@@ -2,7 +2,22 @@ import { useState, useRef } from 'react';
 import { Button } from './ui/Button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from './ui/Card';
 import { extractCodesFromPDF, verifyNoPII } from '../utils/codeOnlyParser';
+import { extractCodesFromImage } from '../services/vision';
 import type { ExtractedCode } from '../utils/codeOnlyParser';
+
+// Supported file types
+const SUPPORTED_TYPES = {
+  'application/pdf': 'PDF',
+  'image/jpeg': 'JPEG',
+  'image/jpg': 'JPEG',
+  'image/png': 'PNG',
+  'image/heic': 'HEIC',
+  'image/heif': 'HEIF',
+  'image/tiff': 'TIFF',
+  'image/webp': 'WebP',
+};
+
+const SUPPORTED_EXTENSIONS = '.pdf,.jpg,.jpeg,.png,.heic,.heif,.tiff,.tif,.webp';
 
 interface PdfUploaderProps {
   onCodesExtracted: (codes: ExtractedCode[]) => void;
@@ -16,8 +31,12 @@ export function PdfUploader({ onCodesExtracted, onError }: PdfUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const processFile = async (file: File) => {
-    if (file.type !== 'application/pdf') {
-      onError('Please upload a PDF file');
+    const fileType = file.type || '';
+    const isSupported = fileType in SUPPORTED_TYPES ||
+      SUPPORTED_EXTENSIONS.split(',').some(ext => file.name.toLowerCase().endsWith(ext));
+
+    if (!isSupported) {
+      onError('Please upload a PDF or image file (JPEG, PNG, HEIC, TIFF, WebP)');
       return;
     }
 
@@ -25,31 +44,71 @@ export function PdfUploader({ onCodesExtracted, onError }: PdfUploaderProps) {
     setFileName(file.name);
 
     try {
-      const result = await extractCodesFromPDF(file);
+      let extractedCodes: ExtractedCode[] = [];
 
-      // Verify no PII was extracted (safety check)
-      const piiCheck = verifyNoPII(result.codes);
-      if (!piiCheck.safe) {
-        console.warn('PII detection warning:', piiCheck.issues);
-        // Still proceed, but the extraction should have filtered out PII
-      }
+      if (fileType === 'application/pdf') {
+        // Process PDF
+        const result = await extractCodesFromPDF(file);
 
-      if (result.extractionWarnings.length > 0) {
-        result.extractionWarnings.forEach(warning => {
-          console.warn('Extraction warning:', warning);
-        });
-      }
+        // Verify no PII was extracted (safety check)
+        const piiCheck = verifyNoPII(result.codes);
+        if (!piiCheck.safe) {
+          console.warn('PII detection warning:', piiCheck.issues);
+        }
 
-      if (result.codes.length === 0) {
-        onError('No offense codes found in the PDF. Please verify this is a valid background check document, or enter codes manually.');
+        if (result.extractionWarnings.length > 0) {
+          result.extractionWarnings.forEach(warning => {
+            console.warn('Extraction warning:', warning);
+          });
+        }
+
+        extractedCodes = result.codes;
       } else {
-        onCodesExtracted(result.codes);
+        // Process image file using Vision OCR
+        const base64 = await fileToBase64(file);
+        const mimeType = fileType || 'image/jpeg';
+
+        const result = await extractCodesFromImage(base64, mimeType);
+
+        if (result.success && result.codes.length > 0) {
+          extractedCodes = result.codes.map(code => ({
+            code,
+            context: 'Image OCR',
+            disposition: 'UNKNOWN' as const,
+            extractionMethod: 'ocr' as const,
+          }));
+        }
+
+        if (result.error) {
+          console.warn('Image extraction warning:', result.error);
+        }
+      }
+
+      if (extractedCodes.length === 0) {
+        onError('No offense codes found in the document. Please verify this is a valid background check document, or enter codes manually.');
+      } else {
+        onCodesExtracted(extractedCodes);
       }
     } catch (err) {
-      onError(`Failed to process PDF: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      onError(`Failed to process file: ${err instanceof Error ? err.message : 'Unknown error'}`);
     } finally {
       setIsProcessing(false);
     }
+  };
+
+  // Convert file to base64 for Vision API
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        // Remove data URL prefix (e.g., "data:image/png;base64,")
+        const base64 = result.split(',')[1];
+        resolve(base64);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
   };
 
   const handleDrop = async (e: React.DragEvent) => {
@@ -74,7 +133,7 @@ export function PdfUploader({ onCodesExtracted, onError }: PdfUploaderProps) {
       <CardHeader>
         <CardTitle>Upload Background Check Document</CardTitle>
         <CardDescription>
-          Upload a background check PDF to automatically extract offense codes.
+          Upload a PDF or photo of a background check document to automatically extract offense codes.
           Only codes are extracted - no names, dates, or other personal information.
         </CardDescription>
       </CardHeader>
@@ -124,12 +183,12 @@ export function PdfUploader({ onCodesExtracted, onError }: PdfUploaderProps) {
                 </svg>
               </div>
               <p className="text-body text-[var(--color-text-primary)] mb-2">
-                Drag and drop a PDF here, or
+                Drag and drop a file here, or
               </p>
               <input
                 ref={fileInputRef}
                 type="file"
-                accept="application/pdf"
+                accept={SUPPORTED_EXTENSIONS}
                 onChange={handleFileSelect}
                 className="hidden"
               />
@@ -140,7 +199,7 @@ export function PdfUploader({ onCodesExtracted, onError }: PdfUploaderProps) {
                 Choose File
               </Button>
               <p className="text-caption mt-4">
-                PDF files only. All processing happens in your browser.
+                PDF or image files (JPEG, PNG, HEIC, TIFF). Photos of documents work too.
               </p>
             </>
           )}
@@ -152,7 +211,7 @@ export function PdfUploader({ onCodesExtracted, onError }: PdfUploaderProps) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
             <span>
-              <strong>Privacy Protected:</strong> This tool extracts ONLY offense codes from the PDF.
+              <strong>Privacy Protected:</strong> This tool extracts ONLY offense codes from your document.
               No names, dates of birth, addresses, or other identifying information is processed or stored.
             </span>
           </p>
