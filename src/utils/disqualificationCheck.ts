@@ -4,9 +4,7 @@ export interface DisqualificationAnalysis {
   overallStatus: DisqualificationStatus;
   mandatoryDisqualifiers: OffenseInfo[];
   hasExemptionPath: OffenseInfo[];
-  reviewRequired: OffenseInfo[];
   nonDisqualifying: OffenseInfo[];
-  unknown: OffenseInfo[];
   recommendations: string[];
   educationalResources: EducationalResource[];
 }
@@ -34,43 +32,43 @@ export const decisionFrameworkQuestions: DecisionFrameworkQuestion[] = [
     id: 'time-elapsed',
     question: 'How much time has elapsed since the offense?',
     guidance: 'Consider the time since the offense occurred. Older offenses, especially those 7+ years ago, may indicate rehabilitation. California law limits how far back employers can consider most convictions.',
-    relevantFor: ['review-required', 'non-disqualifying', 'has-exemption-path']
+    relevantFor: ['non-disqualifying', 'has-exemption-path']
   },
   {
     id: 'job-relatedness',
     question: 'Is the offense related to the job duties?',
     guidance: 'Consider whether the nature of the offense has a direct connection to the responsibilities of the position. For example, a financial crime may be more relevant for a position handling school funds.',
-    relevantFor: ['review-required', 'non-disqualifying', 'has-exemption-path']
+    relevantFor: ['non-disqualifying', 'has-exemption-path']
   },
   {
     id: 'disposition',
     question: 'What was the final disposition of the case?',
     guidance: 'Review whether the case resulted in conviction, dismissal, deferred judgment, or acquittal. Dismissed cases and deferred judgments that were successfully completed carry different weight.',
-    relevantFor: ['review-required', 'non-disqualifying', 'has-exemption-path']
+    relevantFor: ['non-disqualifying', 'has-exemption-path']
   },
   {
     id: 'rehabilitation',
     question: 'Is there evidence of rehabilitation?',
     guidance: 'Look for evidence of rehabilitation such as: completed education programs, stable employment history, community involvement, letters of recommendation, or a Certificate of Rehabilitation.',
-    relevantFor: ['review-required', 'non-disqualifying', 'has-exemption-path']
+    relevantFor: ['non-disqualifying', 'has-exemption-path']
   },
   {
     id: 'honesty',
     question: 'Was the applicant honest about their history?',
     guidance: 'Consider whether the applicant disclosed their criminal history when asked. Honesty and transparency can be indicators of character and trustworthiness.',
-    relevantFor: ['review-required', 'non-disqualifying', 'has-exemption-path']
+    relevantFor: ['non-disqualifying', 'has-exemption-path']
   },
   {
     id: 'circumstances',
     question: 'Are there mitigating circumstances?',
     guidance: 'Consider any context around the offense: age at the time, circumstances that led to the offense, whether it was an isolated incident or part of a pattern.',
-    relevantFor: ['review-required', 'non-disqualifying', 'has-exemption-path']
+    relevantFor: ['non-disqualifying', 'has-exemption-path']
   },
   {
     id: 'position-type',
     question: 'What level of student contact does this position involve?',
     guidance: 'Consider the degree of supervision the employee will have over students. Positions with direct, unsupervised student contact warrant more careful review.',
-    relevantFor: ['review-required', 'non-disqualifying']
+    relevantFor: ['non-disqualifying', 'has-exemption-path']
   }
 ];
 
@@ -124,13 +122,20 @@ export const educationalResources: EducationalResource[] = [
 
 /**
  * Analyze a list of offenses and determine overall disqualification status
+ * Maps review-required and unknown to has-exemption-path for consistency
  */
 export function analyzeOffenses(offenses: OffenseInfo[]): DisqualificationAnalysis {
-  const mandatoryDisqualifiers = offenses.filter(o => o.k12Impact === 'mandatory-disqualifier');
-  const hasExemptionPath = offenses.filter(o => o.k12Impact === 'has-exemption-path');
-  const reviewRequired = offenses.filter(o => o.k12Impact === 'review-required');
-  const nonDisqualifying = offenses.filter(o => o.k12Impact === 'non-disqualifying');
-  const unknown = offenses.filter(o => o.k12Impact === 'unknown');
+  // Map review-required and unknown to has-exemption-path
+  const normalizedOffenses = offenses.map(o => ({
+    ...o,
+    k12Impact: (o.k12Impact === 'review-required' as any || o.k12Impact === 'unknown')
+      ? 'has-exemption-path' as DisqualificationStatus
+      : o.k12Impact
+  }));
+
+  const mandatoryDisqualifiers = normalizedOffenses.filter(o => o.k12Impact === 'mandatory-disqualifier');
+  const hasExemptionPath = normalizedOffenses.filter(o => o.k12Impact === 'has-exemption-path');
+  const nonDisqualifying = normalizedOffenses.filter(o => o.k12Impact === 'non-disqualifying');
 
   // Determine overall status
   let overallStatus: DisqualificationStatus;
@@ -138,10 +143,6 @@ export function analyzeOffenses(offenses: OffenseInfo[]): DisqualificationAnalys
     overallStatus = 'mandatory-disqualifier';
   } else if (hasExemptionPath.length > 0) {
     overallStatus = 'has-exemption-path';
-  } else if (reviewRequired.length > 0) {
-    overallStatus = 'review-required';
-  } else if (unknown.length > 0) {
-    overallStatus = 'unknown';
   } else {
     overallStatus = 'non-disqualifying';
   }
@@ -163,22 +164,13 @@ export function analyzeOffenses(offenses: OffenseInfo[]): DisqualificationAnalys
 
   if (hasExemptionPath.length > 0 && mandatoryDisqualifiers.length === 0) {
     recommendations.push(
-      'Some offenses are serious felonies that may have exemption pathways.'
+      'Some offenses may have exemption pathways available.'
     );
     recommendations.push(
       'Request documentation of any Certificate of Rehabilitation or court findings of rehabilitation.'
     );
     recommendations.push(
       'Use the decision framework questions to guide individualized assessment.'
-    );
-  }
-
-  if (reviewRequired.length > 0) {
-    recommendations.push(
-      'Some offenses require individual review. Consider the nature of the offense in relation to job duties.'
-    );
-    recommendations.push(
-      'Apply the decision framework questions for each offense requiring review.'
     );
   }
 
@@ -205,7 +197,7 @@ export function analyzeOffenses(offenses: OffenseInfo[]): DisqualificationAnalys
     if (hasExemptionPath.length > 0) {
       return true;
     }
-    if (reviewRequired.length > 0 || nonDisqualifying.length > 0) {
+    if (nonDisqualifying.length > 0) {
       return ['California Fair Chance Act'].includes(resource.title);
     }
     return false;
@@ -215,9 +207,7 @@ export function analyzeOffenses(offenses: OffenseInfo[]): DisqualificationAnalys
     overallStatus,
     mandatoryDisqualifiers,
     hasExemptionPath,
-    reviewRequired,
     nonDisqualifying,
-    unknown,
     recommendations,
     educationalResources: relevantResources
   };
@@ -239,13 +229,10 @@ export function getStatusColor(status: DisqualificationStatus): string {
       return 'alert';
     case 'has-exemption-path':
       return 'warning';
-    case 'review-required':
-      return 'warning';
     case 'non-disqualifying':
       return 'success';
-    case 'unknown':
     default:
-      return 'info';
+      return 'warning';
   }
 }
 
@@ -258,12 +245,9 @@ export function getStatusLabel(status: DisqualificationStatus): string {
       return 'Mandatory Disqualifier';
     case 'has-exemption-path':
       return 'Exemption Path Available';
-    case 'review-required':
-      return 'Review Required';
     case 'non-disqualifying':
       return 'Not Disqualifying';
-    case 'unknown':
     default:
-      return 'Unknown - Verify Manually';
+      return 'Exemption Path Available';
   }
 }

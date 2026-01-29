@@ -41,7 +41,7 @@ export function PdfUploader({ onCodesExtracted, onError }: PdfUploaderProps) {
       }
 
       if (result.codes.length === 0) {
-        onError('No offense codes found in the PDF. Please verify this is a California RAP sheet, or enter codes manually.');
+        onError('No offense codes found in the PDF. Please verify this is a valid background check document, or enter codes manually.');
       } else {
         onCodesExtracted(result.codes);
       }
@@ -70,11 +70,11 @@ export function PdfUploader({ onCodesExtracted, onError }: PdfUploaderProps) {
   };
 
   return (
-    <Card variant="elevated" padding="lg">
+    <Card variant="elevated" padding="lg" className="bg-[var(--color-surface)] border border-[var(--color-border)]">
       <CardHeader>
-        <CardTitle>Upload RAP Sheet PDF</CardTitle>
+        <CardTitle>Upload Background Check Document</CardTitle>
         <CardDescription>
-          Upload a California DOJ RAP sheet to automatically extract offense codes.
+          Upload a background check PDF to automatically extract offense codes.
           Only codes are extracted - no names, dates, or other personal information.
         </CardDescription>
       </CardHeader>

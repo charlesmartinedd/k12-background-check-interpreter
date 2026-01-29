@@ -1,40 +1,54 @@
 @import "tailwindcss";
 
-/* Apple/Nintendo-inspired Design Tokens */
+/* Apple-inspired Dark Mode Design Tokens */
 :root {
-  /* Colors - Apple-inspired palette */
-  --color-primary: #0071E3;
-  --color-primary-hover: #0077ED;
-  --color-primary-active: #006DD9;
+  /* Backgrounds - Pure black Apple style */
+  --color-background: #000000;
+  --color-surface: #1C1C1E;
+  --color-surface-elevated: #2C2C2E;
 
-  --color-success: #34C759;
-  --color-success-bg: #E8F9ED;
-  --color-success-border: #B8E6C4;
+  /* Text - Apple white scale */
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #8E8E93;
+  --color-text-tertiary: #636366;
 
-  --color-warning: #FF9500;
-  --color-warning-bg: #FFF4E5;
-  --color-warning-border: #FFD699;
+  /* Primary - Apple Blue */
+  --color-primary: #0A84FF;
+  --color-primary-hover: #409CFF;
+  --color-primary-active: #0071E3;
+  --color-primary-light: rgba(10, 132, 255, 0.15);
 
-  --color-alert: #FF3B30;
-  --color-alert-bg: #FFEBE9;
-  --color-alert-border: #FFBDBA;
+  /* Status Colors - iOS Dark variants */
+  --color-success: #30D158;
+  --color-success-bg: rgba(48, 209, 88, 0.15);
+  --color-success-border: rgba(48, 209, 88, 0.3);
+  --color-success-light: rgba(48, 209, 88, 0.1);
 
-  --color-info: #5856D6;
-  --color-info-bg: #EEEEF9;
+  --color-warning: #FF9F0A;
+  --color-warning-bg: rgba(255, 159, 10, 0.15);
+  --color-warning-border: rgba(255, 159, 10, 0.3);
+  --color-warning-light: rgba(255, 159, 10, 0.1);
 
-  --color-background: #F5F5F7;
-  --color-surface: #FFFFFF;
-  --color-surface-elevated: #FFFFFF;
+  --color-danger: #FF453A;
+  --color-danger-bg: rgba(255, 69, 58, 0.15);
+  --color-danger-border: rgba(255, 69, 58, 0.3);
+  --color-danger-light: rgba(255, 69, 58, 0.1);
 
-  --color-text-primary: #1D1D1F;
-  --color-text-secondary: #6E6E73;
-  --color-text-tertiary: #86868B;
+  /* Keep alert as alias for danger */
+  --color-alert: #FF453A;
+  --color-alert-bg: rgba(255, 69, 58, 0.15);
+  --color-alert-border: rgba(255, 69, 58, 0.3);
 
-  --color-border: #D2D2D7;
-  --color-border-light: #E8E8ED;
+  --color-info: #64D2FF;
+  --color-info-bg: rgba(100, 210, 255, 0.15);
+  --color-info-light: rgba(100, 210, 255, 0.1);
 
-  /* Typography */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  /* Borders - Dark theme */
+  --color-border: #38383A;
+  --color-border-light: #48484A;
+
+  /* Typography - SF Pro preferred */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', 'Segoe UI', sans-serif;
 
   /* Spacing */
   --space-xs: 4px;
@@ -44,18 +58,18 @@
   --space-xl: 32px;
   --space-2xl: 48px;
 
-  /* Border Radius - Nintendo friendly rounded corners */
+  /* Border Radius - Apple rounded corners */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 20px;
   --radius-full: 9999px;
 
-  /* Shadows - Apple depth */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
-  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.16);
+  /* Shadows - Subtle for dark mode */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
 
   /* Transitions */
   --transition-fast: 150ms ease;

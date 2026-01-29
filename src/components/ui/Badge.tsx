@@ -73,12 +73,11 @@ export function StatusBadge({ status, size = 'md', className = '' }: StatusBadge
   const statusConfig: Record<DisqualificationStatus, { variant: BadgeProps['variant']; label: string }> = {
     'mandatory-disqualifier': { variant: 'alert', label: 'Mandatory Disqualifier' },
     'has-exemption-path': { variant: 'warning', label: 'Exemption Available' },
-    'review-required': { variant: 'warning', label: 'Review Required' },
     'non-disqualifying': { variant: 'success', label: 'Not Disqualifying' },
     'unknown': { variant: 'info', label: 'Verify Manually' }
   };
 
-  const config = statusConfig[status];
+  const config = statusConfig[status] || { variant: 'info', label: 'Verify' };
 
   return (
     <Badge variant={config.variant} size={size} className={className}>

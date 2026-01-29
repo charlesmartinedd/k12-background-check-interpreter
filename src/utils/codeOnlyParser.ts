@@ -1,4 +1,5 @@
 import * as pdfjsLib from 'pdfjs-dist';
+import { extractCodesFromImages, renderPdfToImages } from '../services/vision';
 
 // Configure PDF.js worker
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
@@ -8,12 +9,14 @@ export interface ExtractedCode {
   context: string; // Non-PII context like "CNT 01" or disposition
   disposition?: 'CONVICTED' | 'DISMISSED' | 'ACQUITTED' | 'PENDING' | 'UNKNOWN';
   lineNumber?: number;
+  extractionMethod?: 'text' | 'ocr' | 'manual';
 }
 
 export interface ExtractionResult {
   codes: ExtractedCode[];
   totalPages: number;
   extractionWarnings: string[];
+  extractionMethod: 'text' | 'ocr' | 'hybrid';
 }
 
 /**
@@ -173,14 +176,16 @@ export async function extractCodesFromPDF(file: File): Promise<ExtractionResult>
     return {
       codes: extractedCodes,
       totalPages: pdf.numPages,
-      extractionWarnings: warnings
+      extractionWarnings: warnings,
+      extractionMethod: 'text' as const
     };
   } catch (error) {
     warnings.push(`Error processing PDF: ${error instanceof Error ? error.message : 'Unknown error'}`);
     return {
       codes: [],
       totalPages: 0,
-      extractionWarnings: warnings
+      extractionWarnings: warnings,
+      extractionMethod: 'text' as const
     };
   }
 }
@@ -305,4 +310,152 @@ export function verifyNoPII(codes: ExtractedCode[]): { safe: boolean; issues: st
     safe: issues.length === 0,
     issues
   };
+}
+
+/**
+ * Hybrid PDF extraction - tries text first, falls back to OCR for scanned documents
+ * This is the recommended method for V2 as it handles any PDF type
+ */
+export async function extractCodesFromPDFHybrid(
+  file: File,
+  progressCallback?: (status: string, percent: number) => void
+): Promise<ExtractionResult> {
+  const warnings: string[] = [];
+
+  try {
+    progressCallback?.('Reading PDF...', 10);
+
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+
+    progressCallback?.('Extracting text...', 20);
+
+    // First, try text extraction
+    const textResult = await extractCodesFromPDF(file);
+
+    // Check if we got meaningful results from text extraction
+    const textExtractionSuccessful = textResult.codes.length >= 1;
+
+    // If text extraction got results, verify quality by checking if codes look valid
+    if (textExtractionSuccessful) {
+      const validCodes = textResult.codes.filter(c =>
+        CODE_PATTERNS.caStatute.test(c.code) || /^\d{4}$/.test(c.code)
+      );
+      CODE_PATTERNS.caStatute.lastIndex = 0; // Reset regex
+
+      if (validCodes.length >= textResult.codes.length * 0.5) {
+        // At least 50% of extracted codes look valid - use text extraction
+        progressCallback?.('Text extraction successful', 100);
+        return {
+          ...textResult,
+          extractionMethod: 'text',
+          codes: textResult.codes.map(c => ({ ...c, extractionMethod: 'text' as const }))
+        };
+      }
+    }
+
+    // Text extraction didn't work well - try OCR
+    progressCallback?.('Document appears to be scanned. Starting OCR...', 30);
+
+    try {
+      // Render PDF pages to images
+      progressCallback?.('Converting pages to images...', 40);
+      const images = await renderPdfToImages(pdf, 10); // Max 10 pages for cost control
+
+      progressCallback?.('Running OCR analysis...', 60);
+      const ocrResult = await extractCodesFromImages(images);
+
+      if (ocrResult.success && ocrResult.codes.length > 0) {
+        progressCallback?.('OCR extraction successful', 100);
+
+        // Convert OCR codes to ExtractedCode format
+        const extractedCodes: ExtractedCode[] = ocrResult.codes.map(code => ({
+          code,
+          context: 'OCR Extraction',
+          disposition: 'UNKNOWN' as const,
+          extractionMethod: 'ocr' as const
+        }));
+
+        return {
+          codes: extractedCodes,
+          totalPages: pdf.numPages,
+          extractionWarnings: ocrResult.error ? [ocrResult.error] : [],
+          extractionMethod: 'ocr'
+        };
+      }
+
+      // OCR also didn't find codes - try hybrid (combine whatever we got)
+      if (textResult.codes.length > 0 || (ocrResult.codes && ocrResult.codes.length > 0)) {
+        progressCallback?.('Using hybrid results', 100);
+
+        const allCodes = new Set<string>();
+        const hybridCodes: ExtractedCode[] = [];
+
+        // Add text extraction results
+        for (const code of textResult.codes) {
+          if (!allCodes.has(code.code)) {
+            allCodes.add(code.code);
+            hybridCodes.push({ ...code, extractionMethod: 'text' });
+          }
+        }
+
+        // Add OCR results
+        for (const code of ocrResult.codes || []) {
+          if (!allCodes.has(code)) {
+            allCodes.add(code);
+            hybridCodes.push({
+              code,
+              context: 'OCR Extraction',
+              disposition: 'UNKNOWN',
+              extractionMethod: 'ocr'
+            });
+          }
+        }
+
+        return {
+          codes: hybridCodes,
+          totalPages: pdf.numPages,
+          extractionWarnings: ['Used hybrid extraction (text + OCR)'],
+          extractionMethod: 'hybrid'
+        };
+      }
+
+      // Neither method found codes
+      warnings.push('No offense codes found using text extraction or OCR.');
+      if (ocrResult.error) {
+        warnings.push(`OCR error: ${ocrResult.error}`);
+      }
+
+    } catch (ocrError) {
+      warnings.push(`OCR failed: ${ocrError instanceof Error ? ocrError.message : 'Unknown error'}`);
+      warnings.push('Falling back to text-only extraction results.');
+
+      // Return whatever text extraction got
+      if (textResult.codes.length > 0) {
+        return {
+          ...textResult,
+          extractionWarnings: [...textResult.extractionWarnings, ...warnings],
+          extractionMethod: 'text'
+        };
+      }
+    }
+
+    progressCallback?.('Extraction complete', 100);
+
+    return {
+      codes: [],
+      totalPages: pdf.numPages,
+      extractionWarnings: warnings.length > 0 ? warnings : ['No offense codes found in document.'],
+      extractionMethod: 'text'
+    };
+
+  } catch (error) {
+    warnings.push(`Error processing PDF: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    return {
+      codes: [],
+      totalPages: 0,
+      extractionWarnings: warnings,
+      extractionMethod: 'text'
+    };
+  }
 }

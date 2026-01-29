@@ -59,21 +59,15 @@ export function AnalysisReport({
             </div>
             <div className="text-center p-3 bg-[var(--color-warning-bg)] rounded-[var(--radius-md)]">
               <div className="text-2xl font-bold text-[#995700]">
-                {analysis.hasExemptionPath.length + analysis.reviewRequired.length}
+                {analysis.hasExemptionPath.length}
               </div>
-              <div className="text-xs text-[#995700]">Need Review</div>
+              <div className="text-xs text-[#995700]">Exemption Available</div>
             </div>
             <div className="text-center p-3 bg-[var(--color-success-bg)] rounded-[var(--radius-md)]">
               <div className="text-2xl font-bold text-[#1D7A3F]">
                 {analysis.nonDisqualifying.length}
               </div>
               <div className="text-xs text-[#1D7A3F]">Not Disqualifying</div>
-            </div>
-            <div className="text-center p-3 bg-[var(--color-info-bg)] rounded-[var(--radius-md)]">
-              <div className="text-2xl font-bold text-[var(--color-info)]">
-                {analysis.unknown.length}
-              </div>
-              <div className="text-xs text-[var(--color-info)]">Unknown</div>
             </div>
           </div>
 
@@ -147,28 +141,6 @@ export function AnalysisReport({
         </section>
       )}
 
-      {/* Review Required Section */}
-      {analysis.reviewRequired.length > 0 && (
-        <section>
-          <h3 className="text-heading-3 text-[var(--color-text-primary)] mb-4 flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-[var(--color-warning)]"></span>
-            Review Required ({analysis.reviewRequired.length})
-          </h3>
-          <div className="space-y-3">
-            {analysis.reviewRequired.map((offense, index) => {
-              const extracted = getExtractedInfo(offense);
-              return (
-                <OffenseResult
-                  key={`review-${index}`}
-                  offense={offense}
-                  context={extracted?.context}
-                  disposition={extracted?.disposition}
-                />
-              );
-            })}
-          </div>
-        </section>
-      )}
 
       {/* Non-Disqualifying Section */}
       {analysis.nonDisqualifying.length > 0 && (
@@ -193,32 +165,9 @@ export function AnalysisReport({
         </section>
       )}
 
-      {/* Unknown Section */}
-      {analysis.unknown.length > 0 && (
-        <section>
-          <h3 className="text-heading-3 text-[var(--color-text-primary)] mb-4 flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-[var(--color-info)]"></span>
-            Verify Manually ({analysis.unknown.length})
-          </h3>
-          <div className="space-y-3">
-            {analysis.unknown.map((offense, index) => {
-              const extracted = getExtractedInfo(offense);
-              return (
-                <OffenseResult
-                  key={`unknown-${index}`}
-                  offense={offense}
-                  context={extracted?.context}
-                  disposition={extracted?.disposition}
-                />
-              );
-            })}
-          </div>
-        </section>
-      )}
 
       {/* Decision Framework */}
-      {(analysis.reviewRequired.length > 0 ||
-        analysis.nonDisqualifying.length > 0 ||
+      {(analysis.nonDisqualifying.length > 0 ||
         analysis.hasExemptionPath.length > 0) && (
           <DecisionFramework status={analysis.overallStatus} />
         )}

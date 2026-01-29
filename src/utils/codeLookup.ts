@@ -2,11 +2,11 @@ import violentFelonies from '../data/ca-violent-felonies.json';
 import seriousFelonies from '../data/ca-serious-felonies.json';
 import penalCodes from '../data/ca-penal-codes.json';
 import ncicCodes from '../data/ncic-codes.json';
+import type { VerificationSource, ConfidenceLevel } from '../types/legal';
 
 export type DisqualificationStatus =
   | 'mandatory-disqualifier'
   | 'has-exemption-path'
-  | 'review-required'
   | 'non-disqualifying'
   | 'unknown';
 
@@ -21,6 +21,10 @@ export interface OffenseInfo {
   isViolentFelony: boolean;
   isSeriousFelony: boolean;
   exemptionAvailable: boolean;
+  // Multi-source verification fields
+  source: VerificationSource;
+  confidence: ConfidenceLevel;
+  verified: boolean;
 }
 
 export interface ParsedCode {
@@ -95,16 +99,25 @@ export function lookupCode(input: string): OffenseInfo {
   if (parsed.statute === 'NCIC' || /^\d{4}$/.test(parsed.normalizedCode)) {
     const ncicInfo = (ncicCodes.codes as Record<string, any>)[parsed.normalizedCode];
     if (ncicInfo) {
+      // Map legacy review-required to has-exemption-path
+      let k12Impact = ncicInfo.k12Impact as DisqualificationStatus;
+      if (k12Impact === 'review-required' as any) {
+        k12Impact = 'has-exemption-path';
+      }
+
       return {
         code: parsed.normalizedCode,
         statute: 'NCIC',
         description: ncicInfo.description,
         category: ncicInfo.category,
-        k12Impact: ncicInfo.k12Impact as DisqualificationStatus,
-        isViolentFelony: ncicInfo.k12Impact === 'mandatory-disqualifier' &&
+        k12Impact,
+        isViolentFelony: k12Impact === 'mandatory-disqualifier' &&
           ['Homicide', 'Sex Offense', 'Kidnapping', 'Robbery'].includes(ncicInfo.category),
-        isSeriousFelony: ncicInfo.k12Impact === 'mandatory-disqualifier',
-        exemptionAvailable: ncicInfo.k12Impact === 'review-required'
+        isSeriousFelony: k12Impact === 'mandatory-disqualifier',
+        exemptionAvailable: k12Impact === 'has-exemption-path',
+        source: 'local' as VerificationSource,
+        confidence: 'high' as ConfidenceLevel,
+        verified: true
       };
     }
   }
@@ -135,7 +148,11 @@ export function lookupCode(input: string): OffenseInfo {
   if (penalInfo) {
     description = penalInfo.description;
     category = penalInfo.category;
+    // Map legacy review-required to has-exemption-path
     k12Impact = penalInfo.k12Impact as DisqualificationStatus;
+    if (k12Impact === 'review-required' as any) {
+      k12Impact = 'has-exemption-path';
+    }
     citations = penalInfo.citations || [];
     note = penalInfo.note;
   }
@@ -160,6 +177,10 @@ export function lookupCode(input: string): OffenseInfo {
   // Deduplicate citations
   citations = [...new Set(citations)];
 
+  // Determine confidence based on match quality
+  const hasLocalMatch = !!penalInfo || isViolentFelony || isSeriousFelony;
+  const confidence: ConfidenceLevel = hasLocalMatch ? 'high' : (k12Impact !== 'unknown' ? 'medium' : 'low');
+
   return {
     code: `${parsed.normalizedCode}${parsed.subdivision || ''}`,
     statute: parsed.statute,
@@ -171,7 +192,10 @@ export function lookupCode(input: string): OffenseInfo {
     isViolentFelony,
     isSeriousFelony,
     exemptionAvailable: k12Impact === 'has-exemption-path' ||
-      (isSeriousFelony && !isViolentFelony)
+      (isSeriousFelony && !isViolentFelony),
+    source: 'local' as VerificationSource,
+    confidence,
+    verified: hasLocalMatch
   };
 }
 

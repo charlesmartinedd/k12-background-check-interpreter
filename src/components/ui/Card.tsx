@@ -46,7 +46,7 @@ interface CardHeaderProps {
 
 export function CardHeader({ children, className = '' }: CardHeaderProps) {
   return (
-    <div className={`border-b border-[var(--color-border-light)] pb-[var(--space-md)] mb-[var(--space-md)] ${className}`}>
+    <div className={`border-b border-[var(--color-border)] pb-[var(--space-md)] mb-[var(--space-md)] ${className}`}>
       {children}
     </div>
   );
@@ -94,7 +94,7 @@ interface CardFooterProps {
 
 export function CardFooter({ children, className = '' }: CardFooterProps) {
   return (
-    <div className={`border-t border-[var(--color-border-light)] pt-[var(--space-md)] mt-[var(--space-md)] ${className}`}>
+    <div className={`border-t border-[var(--color-border)] pt-[var(--space-md)] mt-[var(--space-md)] ${className}`}>
       {children}
     </div>
   );
