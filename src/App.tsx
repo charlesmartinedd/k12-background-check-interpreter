@@ -6,7 +6,6 @@ import { AIChat } from './components/AIChat';
 import { PrivacyNotice, Disclaimer, BestPractices } from './components/PrivacyNotice';
 import { Button } from './components/ui/Button';
 import { Card } from './components/ui/Card';
-import { Badge } from './components/ui/Badge';
 import { ToastContainer, useToast } from './components/ui/Toast';
 import type { ExtractedCode } from './utils/codeOnlyParser';
 import { performComprehensiveAnalysis, type ComprehensiveAnalysis } from './services/analysis';
@@ -38,6 +37,9 @@ function transformToOffenseInfoArray(analysis: ComprehensiveAnalysis): OffenseIn
       isViolentFelony: isViolent,
       isSeriousFelony: isSerious,
       exemptionAvailable: category === 'has-exemption-path' || (aiResult?.exemptionPathways?.length || 0) > 0,
+      source: code.verificationSource || 'local',
+      confidence: code.verificationConfidence || 'high',
+      verified: code.verified ?? true,
     };
   });
 }

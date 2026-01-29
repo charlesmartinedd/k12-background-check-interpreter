@@ -10,9 +10,7 @@ import type {
   ChatMessage,
   OffenseCodeInfo,
   DisqualificationCategory,
-  VerifiedResult,
-  VerificationSource,
-  ConfidenceLevel
+  VerifiedResult
 } from '../types/legal';
 
 export interface ComprehensiveAnalysis {
