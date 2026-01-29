@@ -16,13 +16,15 @@ export function AIChat({ analysis }: AIChatProps) {
   const [streamingContent, setStreamingContent] = useState('');
   const [privacyWarning, setPrivacyWarning] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  // Scroll within chat container only (not the whole page)
+  // Scroll within chat container only (NEVER scroll the page)
   useEffect(() => {
-    if (messagesEndRef.current) {
-      // Only scroll within the chat messages container, not the page
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // Use scrollTop on the container instead of scrollIntoView to avoid page scroll
+    if (messagesContainerRef.current) {
+      const container = messagesContainerRef.current;
+      container.scrollTop = container.scrollHeight;
     }
   }, [messages, streamingContent]);
 
@@ -132,7 +134,7 @@ export function AIChat({ analysis }: AIChatProps) {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto py-4 space-y-4">
+      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto py-4 space-y-4">
         {messages.length === 0 && !isStreaming && (
           <div className="text-center py-8">
             <div className="text-[var(--color-text-secondary)] mb-4">

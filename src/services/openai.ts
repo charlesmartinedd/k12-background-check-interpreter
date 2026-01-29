@@ -249,22 +249,27 @@ export async function generateExecutiveSummary(
 
   const prompt = `You are an HR compliance specialist writing an executive summary for a K-12 school district hiring manager.
 
-Based on the following background check analysis, write a professional 2-3 paragraph summary that:
-1. States the overall hiring recommendation clearly in the first sentence
-2. Summarizes what offenses were found and their severity
-3. Explains any exemption pathways available if applicable
-4. Provides specific next steps for HR
+CRITICAL FORMATTING RULES:
+- Write in plain text only - NO markdown formatting
+- Do NOT use ** or ## or any special characters for emphasis
+- Do NOT use bullet points or numbered lists
+- Write 2-3 short paragraphs in plain professional English
+
+Based on the following background check analysis, write a brief summary that:
+1. States the hiring recommendation clearly in the first sentence (e.g., "This candidate cannot be hired" or "This candidate may proceed")
+2. Briefly explains what offense was found and why it matters
+3. States next steps for HR in one sentence
 
 Analysis Results:
-- Total offenses analyzed: ${analyses.length}
+- Total offenses: ${analyses.length}
 - Mandatory disqualifiers: ${mandatoryCount}
-- Offenses with exemption paths: ${exemptionCount}
-- Non-disqualifying offenses: ${clearCount}
+- Exemption available: ${exemptionCount}
+- Non-disqualifying: ${clearCount}
 
 Offense Details:
 ${JSON.stringify(summaryData, null, 2)}
 
-Write in a professional, clear tone. Be direct about the hiring recommendation. Do not use bullet points - write in paragraph form.`;
+Remember: Plain text only, no ** or formatting symbols. Be concise.`;
 
   try {
     const response = await client.chat.completions.create({

@@ -105,8 +105,17 @@ function App() {
       setAnalysis(result);
       setAnalysisStatus('complete');
 
-      // Scroll to top to show Analysis Summary first
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Force scroll to top immediately after render - no smooth behavior
+      // Using multiple methods to ensure it works
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+
+      // Also force after React render cycle completes
+      requestAnimationFrame(() => {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+      });
 
       toast.success(`Analyzed ${codes.length} offense code${codes.length !== 1 ? 's' : ''} with AI`);
     } catch (error) {
