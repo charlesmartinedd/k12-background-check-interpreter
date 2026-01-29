@@ -15,7 +15,7 @@ export function PrivacyNotice() {
               Background Check Assistant for HR Departments
             </h3>
             <p className="text-body-sm text-[var(--color-text-secondary)] mb-3">
-              Streamline employee screening for California K-12 public schools. Upload DOJ background check documents
+              Streamline employee screening for California K-12 public schools. Upload background check documents
               to automatically identify offense codes and translate them into clear, actionable summaries.
               Only offense codes are extracted - no personal information is processed or stored.
             </p>
@@ -30,7 +30,7 @@ export function PrivacyNotice() {
                 <svg className="w-4 h-4 text-[var(--color-success)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
-                Translates DOJ codes to plain language
+                Translates offense codes to plain language
               </li>
               <li className="flex items-center gap-2">
                 <svg className="w-4 h-4 text-[var(--color-success)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">

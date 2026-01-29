@@ -17,7 +17,7 @@ function getClient(): OpenAI {
 }
 
 // OCR extraction prompt
-const OCR_EXTRACTION_PROMPT = `You are analyzing a background check document (DOJ Criminal History Record). Your task is to extract ONLY the offense codes from this document.
+const OCR_EXTRACTION_PROMPT = `You are analyzing a background check document (Criminal History Record). Your task is to extract ONLY the offense codes from this document.
 
 IMPORTANT PRIVACY REQUIREMENTS:
 - Extract ONLY offense codes (e.g., "484 PC", "11377 HS", "23152 VC", "211 PC")
