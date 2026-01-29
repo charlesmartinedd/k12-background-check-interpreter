@@ -5,6 +5,8 @@ test.setTimeout(180000);
 test.describe('AI Chatbot Functionality Tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
+    // Switch to manual entry mode (app defaults to PDF upload)
+    await page.click('button:has-text("Enter Manually")');
     // Pre-analyze a code to have context for chat
     await page.fill('textarea', '484 PC');
     await page.click('button:has-text("Analyze Codes")');
@@ -57,6 +59,8 @@ test.describe('AI Chatbot Functionality Tests', () => {
 test.describe('AI Chatbot Guardrail Tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
+    // Switch to manual entry mode (app defaults to PDF upload)
+    await page.click('button:has-text("Enter Manually")');
     await page.fill('textarea', '484 PC');
     await page.click('button:has-text("Analyze Codes")');
     await expect(page.getByRole('heading', { name: 'Analysis Summary' })).toBeVisible({ timeout: 90000 });
@@ -172,6 +176,8 @@ test.describe('AI Chatbot Guardrail Tests', () => {
 test.describe('Chatbot Helpfulness Tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
+    // Switch to manual entry mode (app defaults to PDF upload)
+    await page.click('button:has-text("Enter Manually")');
     await page.fill('textarea', '211 PC, 484 PC');
     await page.click('button:has-text("Analyze Codes")');
     await expect(page.getByRole('heading', { name: 'Analysis Summary' })).toBeVisible({ timeout: 90000 });
