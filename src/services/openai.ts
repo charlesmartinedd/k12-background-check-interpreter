@@ -26,10 +26,17 @@ const SYSTEM_PROMPT = `You are a K-12 employment background check specialist wit
 - California Fair Chance Act
 
 Your role is to:
-1. Translate offense codes into plain English
+1. Translate offense codes into plain English with the SPECIFIC CRIME NAME
 2. Determine if an offense is a mandatory disqualifier for K-12 employment
 3. Identify available exemption pathways
 4. Provide fair, balanced guidance that considers rehabilitation
+
+OFFENSE DESCRIPTION REQUIREMENTS:
+- Always start with the actual crime name in plain English (e.g., "Robbery", "Burglary", "Assault with a Deadly Weapon")
+- State whether it's typically a FELONY or MISDEMEANOR
+- Include what the crime involves in simple terms a layperson would understand
+- Example: "Robbery (Felony) - Taking property from another person by force or fear"
+- Example: "Petty Theft (Misdemeanor) - Stealing property valued under $950"
 
 IMPORTANT CLASSIFICATIONS (use ONLY these 3 categories):
 - "mandatory-disqualifier": Violent felonies under PC 667.5(c) or certain serious felonies under PC 1192.7(c) - CANNOT be hired
@@ -42,11 +49,11 @@ Always cite specific statute sections. Never provide legal advice - recommend co
 
 Respond in JSON format with the following structure:
 {
-  "offenseDescription": "Plain English description of the offense",
+  "offenseDescription": "Crime Name (Felony/Misdemeanor) - Clear explanation of what this crime is",
   "k12Classification": "mandatory-disqualifier|has-exemption-path|non-disqualifying",
-  "explanation": "Why this classification applies",
+  "explanation": "Why this classification applies and what makes it serious or not",
   "exemptionPathways": ["Array of possible exemption routes if any"],
-  "hrGuidance": "Specific guidance for HR professionals",
+  "hrGuidance": "Specific actionable guidance for HR professionals",
   "statuteCitations": ["Array of relevant statute citations"],
   "confidence": "high|medium|low"
 }`;
@@ -230,6 +237,67 @@ export async function analyzeOffenseCodes(
     codes.map(code => analyzeOffenseCode(code, ragContexts?.get(code)))
   );
   return analyses;
+}
+
+// Generate executive summary using GPT-5.2
+export async function generateExecutiveSummary(
+  analyses: AIAnalysisResult[]
+): Promise<string> {
+  const client = getClient();
+
+  const summaryData = analyses.map(a => ({
+    code: a.code,
+    description: a.offenseDescription,
+    classification: a.k12Classification,
+    exemptions: a.exemptionPathways,
+  }));
+
+  const mandatoryCount = analyses.filter(a => a.k12Classification === 'mandatory-disqualifier').length;
+  const exemptionCount = analyses.filter(a => a.k12Classification === 'has-exemption-path').length;
+  const clearCount = analyses.filter(a => a.k12Classification === 'non-disqualifying').length;
+
+  const prompt = `You are an HR compliance specialist writing an executive summary for a K-12 school district hiring manager.
+
+Based on the following background check analysis, write a professional 2-3 paragraph summary that:
+1. States the overall hiring recommendation clearly in the first sentence
+2. Summarizes what offenses were found and their severity
+3. Explains any exemption pathways available if applicable
+4. Provides specific next steps for HR
+
+Analysis Results:
+- Total offenses analyzed: ${analyses.length}
+- Mandatory disqualifiers: ${mandatoryCount}
+- Offenses with exemption paths: ${exemptionCount}
+- Non-disqualifying offenses: ${clearCount}
+
+Offense Details:
+${JSON.stringify(summaryData, null, 2)}
+
+Write in a professional, clear tone. Be direct about the hiring recommendation. Do not use bullet points - write in paragraph form.`;
+
+  try {
+    const response = await client.chat.completions.create({
+      model: config.openai.model,
+      messages: [
+        { role: 'user', content: prompt },
+      ],
+      temperature: 0.5,
+      max_tokens: 500,
+    });
+
+    return response.choices[0]?.message?.content || 'Unable to generate summary.';
+  } catch (error) {
+    console.error('Executive summary generation error:', error);
+
+    // Fallback summary
+    if (mandatoryCount > 0) {
+      return `This background check contains ${mandatoryCount} mandatory disqualifier(s) under California Education Code. The candidate cannot be employed in K-12 positions unless valid exemption documentation (such as a Certificate of Rehabilitation or Governor's Pardon) is provided. HR should consult with legal counsel before proceeding.`;
+    } else if (exemptionCount > 0) {
+      return `This background check contains ${exemptionCount} offense(s) that require review. These offenses are not automatic disqualifiers but may require exemption documentation. HR should request any Certificate of Rehabilitation or court findings of rehabilitation from the candidate and consult with legal counsel to determine eligibility.`;
+    } else {
+      return `This background check contains no disqualifying offenses for K-12 employment. The candidate may proceed through the standard hiring process in compliance with the California Fair Chance Act.`;
+    }
+  }
 }
 
 // Chat with AI about analysis results (with guardrails)

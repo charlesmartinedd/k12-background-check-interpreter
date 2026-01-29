@@ -2,7 +2,7 @@
 // Enhanced with multi-source verification pipeline
 
 import { enrichOffenseCodes } from './rag';
-import { analyzeOffenseCodes, chatAboutAnalysis, streamChatResponse } from './openai';
+import { analyzeOffenseCodes, chatAboutAnalysis, streamChatResponse, generateExecutiveSummary } from './openai';
 import { searchCode } from './webSearch';
 import { lookupCode, type OffenseInfo } from '../utils/codeLookup';
 import type {
@@ -142,6 +142,7 @@ export interface AnalysisSummary {
   hasExemptionPath: number;
   nonDisqualifying: number;
   overallRecommendation: string;
+  executiveSummary: string;
 }
 
 // Perform comprehensive analysis on offense codes
@@ -189,8 +190,11 @@ export async function performComprehensiveAnalysis(
     };
   });
 
-  // Step 4: Generate summary
-  const summary = generateSummary(offenseInfos, aiAnalysis);
+  // Step 4: Generate executive summary using GPT-5.2
+  const executiveSummary = await generateExecutiveSummary(aiAnalysis);
+
+  // Step 5: Generate summary with executive summary
+  const summary = generateSummary(offenseInfos, aiAnalysis, executiveSummary);
 
   return {
     codes: offenseInfos,
@@ -233,7 +237,8 @@ function getRelevantStatute(category: DisqualificationCategory): string {
 // Generate analysis summary
 function generateSummary(
   codes: OffenseCodeInfo[],
-  analyses: AIAnalysisResult[]
+  analyses: AIAnalysisResult[],
+  executiveSummary: string
 ): AnalysisSummary {
   const counts = {
     mandatoryDisqualifiers: 0,
@@ -277,6 +282,7 @@ function generateSummary(
     hasExemptionPath: counts.hasExemptionPath,
     nonDisqualifying: counts.nonDisqualifying,
     overallRecommendation,
+    executiveSummary,
   };
 }
 

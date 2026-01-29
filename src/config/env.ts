@@ -4,7 +4,7 @@
 export const config = {
   openai: {
     apiKey: import.meta.env.VITE_OPENAI_API_KEY as string,
-    model: 'gpt-5.2', // OpenAI GPT-5.2
+    model: 'gpt-5.2-chat-latest', // OpenAI GPT-5.2 Chat model
   },
   gemini: {
     apiKey: import.meta.env.VITE_GEMINI_API_KEY as string,

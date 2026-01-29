@@ -267,8 +267,20 @@ function App() {
                   <p className="text-xs text-[var(--color-success)]">Non-Disqualifying</p>
                 </div>
               </div>
-              <div className="p-4 bg-[var(--color-surface-elevated)] rounded-xl border border-[var(--color-border)]">
-                <p className="text-sm text-[var(--color-text-primary)]">
+
+              {/* Executive Summary - AI-Generated Detailed Analysis */}
+              <div className="mb-4 p-4 bg-[var(--color-surface-elevated)] rounded-xl border border-[var(--color-border)]">
+                <h3 className="text-sm font-semibold text-[var(--color-text-secondary)] uppercase tracking-wide mb-3">
+                  Executive Summary
+                </h3>
+                <p className="text-sm text-[var(--color-text-primary)] leading-relaxed whitespace-pre-line">
+                  {analysis.summary.executiveSummary}
+                </p>
+              </div>
+
+              {/* Quick Recommendation */}
+              <div className="p-4 bg-[var(--color-primary-light)] rounded-xl border border-[var(--color-primary)]">
+                <p className="text-sm font-medium text-[var(--color-primary)]">
                   {analysis.summary.overallRecommendation}
                 </p>
               </div>
