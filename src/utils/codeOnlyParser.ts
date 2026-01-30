@@ -17,6 +17,127 @@ export interface ExtractionResult {
   totalPages: number;
   extractionWarnings: string[];
   extractionMethod: 'text' | 'ocr' | 'hybrid';
+  documentValidation?: DocumentValidation;
+}
+
+export interface DocumentValidation {
+  isValid: boolean;
+  confidence: 'high' | 'medium' | 'low' | 'none';
+  indicators: string[];
+  reason?: string;
+}
+
+/**
+ * Background check document indicators - STRICT validation
+ * Requires at least one strong indicator to be considered valid
+ */
+const DOCUMENT_INDICATORS = {
+  // Strong indicators - presence of one is sufficient
+  strong: [
+    /\bRAP\s*SHEET\b/i,
+    /\bCRIMINAL\s*HISTORY\b/i,
+    /\bARREST\s*RECORD\b/i,
+    /\bCRIMINAL\s*RECORD\b/i,
+    /\bDEPARTMENT\s*OF\s*JUSTICE\b/i,
+    /\bDOJ\b/i,
+    /\bFBI\b/i,
+    /\bLIVESCAN\b/i,
+    /\bRAPBACK\b/i,
+    /\bCII\s*#?\d+/i, // California Identification Index
+  ],
+  // Medium indicators - need multiple
+  medium: [
+    /\bARREST\b/i,
+    /\bCONVICTION\b/i,
+    /\bCHARGE[DS]?\b/i,
+    /\bCNT\s*\d+/i, // Count numbers on RAP sheets
+    /\bDISP(?:OSITION)?\b/i,
+    /\bCOURT\b/i,
+    /\bFELONY\b/i,
+    /\bMISDEMEANOR\b/i,
+    /\bCASE\s*#?\d+/i,
+    /\bBOOKING\b/i,
+  ],
+  // Statute patterns themselves indicate background check context
+  statutes: [
+    /\b\d{2,5}(?:\.\d+)?(?:\([a-z0-9]+\))*\s*(?:PC|HS|VC|BP|WI|FC)\b/i,
+    /\b(?:PC|HS|VC|BP|WI|FC)\s*\d{2,5}(?:\.\d+)?(?:\([a-z0-9]+\))*/i,
+  ],
+};
+
+/**
+ * Validate if a document appears to be a California background check
+ * BALANCED mode: Accepts documents with statutes OR criminal justice indicators
+ */
+export function validateBackgroundCheckDocument(text: string): DocumentValidation {
+  const foundIndicators: string[] = [];
+  let strongCount = 0;
+  let mediumCount = 0;
+  let statuteCount = 0;
+
+  // Check strong indicators
+  for (const pattern of DOCUMENT_INDICATORS.strong) {
+    const match = text.match(pattern);
+    if (match) {
+      strongCount++;
+      foundIndicators.push(match[0].trim());
+    }
+  }
+
+  // Check medium indicators
+  for (const pattern of DOCUMENT_INDICATORS.medium) {
+    const match = text.match(pattern);
+    if (match) {
+      mediumCount++;
+      foundIndicators.push(match[0].trim());
+    }
+  }
+
+  // Check for statute patterns
+  for (const pattern of DOCUMENT_INDICATORS.statutes) {
+    const matches = text.match(new RegExp(pattern.source, 'gi'));
+    if (matches) {
+      statuteCount += matches.length;
+    }
+  }
+
+  // BALANCED validation - accept if any of these conditions are met:
+
+  // High confidence: Strong indicator present
+  if (strongCount >= 1) {
+    return {
+      isValid: true,
+      confidence: 'high',
+      indicators: foundIndicators.slice(0, 5),
+    };
+  }
+
+  // Medium confidence: Has California statute codes (the main thing we're looking for)
+  if (statuteCount >= 1) {
+    return {
+      isValid: true,
+      confidence: 'medium',
+      indicators: [`${statuteCount} statute code(s) found`, ...foundIndicators.slice(0, 3)],
+    };
+  }
+
+  // Low confidence: Has some criminal justice context
+  if (mediumCount >= 2) {
+    return {
+      isValid: true,
+      confidence: 'low',
+      indicators: foundIndicators.slice(0, 5),
+    };
+  }
+
+  // No evidence of background check content - reject
+  // This catches spreadsheets, invoices, random documents
+  return {
+    isValid: false,
+    confidence: 'none',
+    indicators: foundIndicators,
+    reason: "This doesn't appear to be a California background check document. Please upload a RAP sheet or criminal history report.",
+  };
 }
 
 /**
@@ -27,18 +148,32 @@ const CODE_PATTERNS = {
   // California statute pattern: "484 PC", "667.5(c) PC", "PC 484", "11350 HS"
   caStatute: /\b(\d{2,5}(?:\.\d+)?(?:\([a-z0-9]+\))*)\s*(PC|HS|VC|BP|WI|FC)\b|\b(PC|HS|VC|BP|WI|FC)\s*(\d{2,5}(?:\.\d+)?(?:\([a-z0-9]+\))*)\b/gi,
 
-  // NCIC code pattern: 4-digit codes
-  ncicCode: /\b([0-9]{4})\b/g,
-
   // Count pattern on RAP sheets: "CNT 01", "CNT 02"
   countPattern: /CNT\s*(\d{1,2})/gi,
 
-  // Charge pattern: common format "CNT 01 484 PC-PETTY THEFT"
-  chargePattern: /CNT\s*\d{1,2}\s+(\d{2,5}(?:\.\d+)?(?:\([a-z0-9]+\))*)\s*(PC|HS|VC|BP|WI|FC)/gi,
-
   // Disposition keywords
-  dispositionPattern: /\b(CONVICTED|CONV|DISMISSED|DISM|ACQUITTED|ACQ|NOT GUILTY|GUILTY|PENDING)\b/gi
+  dispositionPattern: /\b(CONVICTED|CONV|DISMISSED|DISM|ACQUITTED|ACQ|NOT GUILTY|GUILTY|PENDING)\b/gi,
 };
+
+/**
+ * STRICT CODE VALIDATION
+ * Only returns true for codes that match valid California statute format
+ * This ensures we NEVER show random numbers to users
+ */
+const VALID_CODE_PATTERN = /^\d{2,5}(?:\.\d+)?(?:\([a-z0-9]+\))*\s*(PC|HS|VC|BP|WI|FC)$/i;
+
+export function isValidCaliforniaCode(code: string): boolean {
+  return VALID_CODE_PATTERN.test(code.trim());
+}
+
+/**
+ * Filter extracted codes to only include valid California statutes
+ * This is the final gate before showing codes to users
+ */
+export function filterToValidCodes(codes: ExtractedCode[]): ExtractedCode[] {
+  return codes.filter(c => isValidCaliforniaCode(c.code));
+}
+
 
 /**
  * PII patterns to AVOID extracting
@@ -122,11 +257,13 @@ function extractDisposition(text: string): ExtractedCode['disposition'] {
 /**
  * Parse PDF and extract ONLY offense codes - no PII
  * This is the main function for processing RAP sheets safely
+ * Includes document validation to reject non-background check documents
  */
 export async function extractCodesFromPDF(file: File): Promise<ExtractionResult> {
   const warnings: string[] = [];
   const extractedCodes: ExtractedCode[] = [];
   const seenCodes = new Set<string>();
+  let fullText = '';
 
   try {
     const arrayBuffer = await file.arrayBuffer();
@@ -143,6 +280,7 @@ export async function extractCodesFromPDF(file: File): Promise<ExtractionResult>
       for (const item of textContent.items) {
         if ('str' in item) {
           const text = item.str;
+          fullText += ' ' + text; // Accumulate for validation
 
           // Skip empty strings
           if (!text.trim()) {
@@ -157,9 +295,6 @@ export async function extractCodesFromPDF(file: File): Promise<ExtractionResult>
 
           // Append to current line
           currentLine += ' ' + text;
-
-          // Check for line break (large Y position change would indicate new line)
-          // This is a simplification - actual implementation would track Y coordinates
         }
       }
 
@@ -169,15 +304,33 @@ export async function extractCodesFromPDF(file: File): Promise<ExtractionResult>
       }
     }
 
-    if (extractedCodes.length === 0) {
-      warnings.push('No offense codes were found in the document. Please verify this is a California RAP sheet.');
+    // Validate document type BEFORE returning results
+    const validation = validateBackgroundCheckDocument(fullText);
+
+    if (!validation.isValid) {
+      return {
+        codes: [],
+        totalPages: pdf.numPages,
+        extractionWarnings: [validation.reason || "This doesn't appear to be a background check document."],
+        extractionMethod: 'text' as const,
+        documentValidation: validation
+      };
+    }
+
+    // STRICT VALIDATION: Only return codes that match valid California statute format
+    // This ensures we NEVER show random numbers, years, or other false positives to users
+    const validatedCodes = filterToValidCodes(extractedCodes);
+
+    if (validatedCodes.length === 0) {
+      warnings.push('No valid California statute codes found. Codes must be in format like "484 PC" or "11350 HS".');
     }
 
     return {
-      codes: extractedCodes,
+      codes: validatedCodes,
       totalPages: pdf.numPages,
       extractionWarnings: warnings,
-      extractionMethod: 'text' as const
+      extractionMethod: 'text' as const,
+      documentValidation: validation
     };
   } catch (error) {
     warnings.push(`Error processing PDF: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -222,28 +375,9 @@ function processLine(
     });
   }
 
-  // Also check for NCIC codes (4-digit)
-  const ncicMatches = trimmedLine.match(CODE_PATTERNS.ncicCode);
-  if (ncicMatches) {
-    for (const ncicCode of ncicMatches) {
-      // Filter out years and other common 4-digit numbers
-      const num = parseInt(ncicCode);
-      // NCIC codes are generally 0001-9999 but we'll filter obvious non-codes
-      // Years (1900-2099), common non-code numbers
-      if (num >= 1900 && num <= 2099) continue; // Likely a year
-      if (num < 100) continue; // Too small
-
-      if (!seenCodes.has(ncicCode)) {
-        seenCodes.add(ncicCode);
-        extractedCodes.push({
-          code: ncicCode,
-          context: 'NCIC Code',
-          disposition: extractDisposition(trimmedLine),
-          lineNumber
-        });
-      }
-    }
-  }
+  // NOTE: We no longer extract standalone NCIC codes (4-digit numbers)
+  // Only valid California statute codes (e.g., "484 PC", "11350 HS") are returned
+  // This prevents false positives from random numbers in documents
 }
 
 /**
@@ -315,6 +449,7 @@ export function verifyNoPII(codes: ExtractedCode[]): { safe: boolean; issues: st
 /**
  * Hybrid PDF extraction - tries text first, falls back to OCR for scanned documents
  * This is the recommended method for V2 as it handles any PDF type
+ * Includes document validation to reject non-background check documents
  */
 export async function extractCodesFromPDFHybrid(
   file: File,
@@ -330,8 +465,14 @@ export async function extractCodesFromPDFHybrid(
 
     progressCallback?.('Extracting text...', 20);
 
-    // First, try text extraction
+    // First, try text extraction (includes document validation)
     const textResult = await extractCodesFromPDF(file);
+
+    // If document validation failed, return immediately with the validation error
+    if (textResult.documentValidation && !textResult.documentValidation.isValid) {
+      progressCallback?.('Document validation failed', 100);
+      return textResult;
+    }
 
     // Check if we got meaningful results from text extraction
     const textExtractionSuccessful = textResult.codes.length >= 1;

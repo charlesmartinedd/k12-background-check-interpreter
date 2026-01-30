@@ -16,29 +16,45 @@ function getClient(): OpenAI {
   return openaiClient;
 }
 
-// OCR extraction prompt
-const OCR_EXTRACTION_PROMPT = `You are analyzing a background check document (Criminal History Record). Your task is to extract ONLY the offense codes from this document.
+// OCR extraction prompt - balanced approach
+const OCR_EXTRACTION_PROMPT = `You are analyzing a document to extract California offense codes. Be thorough in finding all codes.
 
+STEP 1: QUICK DOCUMENT CHECK
+Only reject if this is CLEARLY not a legal/criminal document (e.g., a spreadsheet with random numbers, an invoice, a receipt with prices, or unrelated business document).
+
+If clearly NOT a criminal/legal document, return:
+{
+  "isBackgroundCheck": false,
+  "codes": [],
+  "reason": "This does not appear to be a California background check document"
+}
+
+Otherwise, proceed to extract codes - when in doubt, extract codes and let the user decide.
+
+STEP 2: CODE EXTRACTION
 IMPORTANT PRIVACY REQUIREMENTS:
 - Extract ONLY offense codes (e.g., "484 PC", "11377 HS", "23152 VC", "211 PC")
 - Do NOT extract names, dates of birth, addresses, Social Security numbers, CII numbers, or any other personal information
-- Do NOT extract arrest dates, court dates, or other dates
-- Do NOT extract any identifying information about the individual
 
 Look for offense codes in these formats:
-- California Penal Code: "484 PC", "187(a) PC", "211 PC"
-- Health & Safety Code: "11377 HS", "11350(a) HS"
-- Vehicle Code: "23152(a) VC", "14601.1 VC"
-- NCIC codes: 4-digit numbers like "2099", "1399"
+- California Penal Code: "484 PC", "187(a) PC", "211 PC", "PC 484"
+- Health & Safety Code: "11377 HS", "11350(a) HS", "HS 11377"
+- Vehicle Code: "23152(a) VC", "14601.1 VC", "VC 23152"
+- Business & Professions: "25658 BP", "BP 25658"
+- Welfare & Institutions: "602 WI", "WI 602"
+- Family Code: "273.5 FC", "FC 273.5"
+- NCIC codes: 4-digit codes if labeled "NCIC" or appearing with charges
 - Charge counts: "CNT 01 484 PC-PETTY THEFT"
 
-Return the offense codes as a JSON array. Example:
+Return format:
 {
+  "isBackgroundCheck": true,
   "codes": ["484 PC", "211 PC", "23152(a) VC", "11377 HS"]
 }
 
-If you cannot find any offense codes, return:
+If no codes found:
 {
+  "isBackgroundCheck": true,
   "codes": [],
   "error": "No offense codes found in document"
 }`;
@@ -47,6 +63,7 @@ export interface VisionExtractionResult {
   success: boolean;
   codes: string[];
   error?: string;
+  isBackgroundCheck?: boolean;
 }
 
 // Convert PDF page to base64 image (called from hybrid extractor)
@@ -89,10 +106,21 @@ export async function extractCodesFromImage(
 
     const parsed = JSON.parse(content);
 
+    // Check if document validation failed
+    if (parsed.isBackgroundCheck === false) {
+      return {
+        success: false,
+        codes: [],
+        error: parsed.reason || "This doesn't appear to be a California background check document.",
+        isBackgroundCheck: false,
+      };
+    }
+
     return {
       success: true,
       codes: parsed.codes || [],
       error: parsed.error,
+      isBackgroundCheck: parsed.isBackgroundCheck ?? true,
     };
   } catch (error) {
     console.error('Vision API extraction error:', error);
