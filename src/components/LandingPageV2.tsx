@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { Button } from './ui/Button';
 import { Card } from './ui/Card';
-import { parseManualCodes, extractCodesFromPDF, verifyNoPII, extractCodesFromPDFHybrid, isValidCaliforniaCode } from '../utils/codeOnlyParser';
+import { parseManualCodes, verifyNoPII, extractCodesFromPDFHybrid, isValidCaliforniaCode } from '../utils/codeOnlyParser';
 import { extractCodesFromImage } from '../services/vision';
 import type { ExtractedCode } from '../utils/codeOnlyParser';
 
